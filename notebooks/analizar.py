@@ -133,6 +133,22 @@ def main():
         SELECT cohorte, en_riesgo, tasa_cruda_pct, tasa_{CORTES[0]}m, tasa_{CORTES[1]}m, tasa_{CORTES[2]}m
         FROM ranking ORDER BY cohorte DESC LIMIT 12""").df().to_string(index=False))
 
+    con.execute((CONSULTAS / '05_proyeccion_usd.sql').read_text(encoding='utf-8'))
+
+    # Condicion de aceptacion: para una cohorte COMPLETA la proyeccion tiene que devolver su
+    # propia tasa observada en H. Si no, los factores estan mal construidos y todo lo que cuelga
+    # de ellos es ruido con aspecto de cifra.
+    for tabla_p, col_obs, col_proy in [
+        ('proyeccion_terminal', 'tasa_observada', 'terminal_proyectado_pct'),
+        ('proyeccion_terminal_usd', 'tasa_observada_usd', 'terminal_usd_pct'),
+    ]:
+        mal = con.sql(f"""SELECT count(*) FROM {tabla_p}
+                         WHERE completa AND abs({col_proy} - {col_obs}) > 0.0001""").fetchone()[0]
+        if mal:
+            raise SystemExit(f'{tabla_p}: {mal} cohortes completas donde la proyeccion no '
+                             f'reproduce lo observado. Los factores estan mal.')
+    print('Proyeccion consistente en las cohortes completas (conteo y dolares).')
+
     log('Proyeccion de las cohortes inmaduras')
     print(con.sql("""
         SELECT cohorte, edad_lectura, tasa_cruda_pct, tasa_observada,
@@ -142,6 +158,19 @@ def main():
     # ---------------------------------------------------------------
     # Exportación: solo agregados
     # ---------------------------------------------------------------
+    log('La cifra para el modelo: ponderada por dolares')
+    print('tasa_acum_usd_pct = importe fallido / importe aprobado en origen. Centimos perdidos')
+    print('por dolar aprobado. NO es perdida sobre saldo vivo, NO es severidad, NO es neta.')
+    print()
+    print(con.sql("""
+        SELECT c.cohorte, c.tasa_cruda_pct AS conteo_crudo, u.tasa_cruda_usd_pct AS usd_crudo,
+               p.terminal_proyectado_pct AS conteo_terminal, u.terminal_usd_pct AS usd_terminal,
+               u.terminal_usd_q1_pct AS usd_q1, u.terminal_usd_q3_pct AS usd_q3, u.proyectable
+        FROM cohortes c
+        JOIN proyeccion_terminal p USING (cohorte)
+        JOIN proyeccion_terminal_usd u USING (cohorte)
+        WHERE c.cohorte >= 2018 ORDER BY c.cohorte""").df().to_string(index=False))
+
     log('Exportacion a salidas/tablas/')
     # Las curvas viajan sin `en_riesgo` ni `fallidos_acum`: el primero es constante por
     # cohorte x nivel y vive en poblacion_por_nivel.csv, y el segundo se reconstruye de la tasa.
@@ -171,6 +200,7 @@ def main():
         'ranking_ingenuo_vs_corregido.csv': 'SELECT * FROM ranking ORDER BY cohorte',
         'proyeccion_terminal.csv': 'SELECT * FROM proyeccion_terminal ORDER BY cohorte',
         'factores_desarrollo.csv': 'SELECT * FROM factores_desarrollo ORDER BY edad',
+        'proyeccion_terminal_usd.csv': 'SELECT * FROM proyeccion_terminal_usd ORDER BY cohorte',
         'cohortes.csv': 'SELECT * FROM cohortes ORDER BY cohorte',
     }
     for nombre, sql in EXPORTES.items():

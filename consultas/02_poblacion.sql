@@ -114,8 +114,22 @@ etiquetados AS (
 
     /* Cuartil de importe DENTRO de su cohorte, no sobre toda la historia. Un préstamo de
        100.000 $ era grande en 1993 y es mediano en 2025: cuartilar globalmente convertiría el
-       tramo de importe en un reloj disfrazado y el corte mediría inflación, no riesgo. */
-    ntile(4) OVER (PARTITION BY anio_fiscal ORDER BY importe_aprobado) AS cuartil_importe
+       tramo de importe en un reloj disfrazado y el corte mediría inflación, no riesgo.
+
+       EL DESEMPATE NO ES DECORATIVO. Ordenar solo por importe deja miles de empates —los importes
+       se concentran en cifras redondas (50.000, 150.000, 500.000)— y `ntile` los reparte según el
+       orden en que lleguen las filas, que DuckDB no garantiza entre ejecuciones al leer cuatro
+       archivos en paralelo. Sin estas columnas extra, reconstruir la base cambiaba la mitad de las
+       filas de `curva_por_importe.csv`, y el caso promete reproducibilidad en su README.
+
+       Las columnas de desempate incluyen `estado` y `fecha_fallido` a propósito: así, cualquier
+       empate que quede es entre filas con el mismo desenlace, y moverlas de cuartil no puede
+       alterar la curva. */
+    ntile(4) OVER (
+      PARTITION BY anio_fiscal
+      ORDER BY importe_aprobado, fecha_aprobacion, plazo_meses,
+               estado, fecha_fallido, lender_id, naics
+    )                                                                AS cuartil_importe
 
   FROM desembolsados
 )

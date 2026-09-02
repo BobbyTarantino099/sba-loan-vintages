@@ -127,11 +127,31 @@ therefore holds nine months of approvals (23,243 disbursed), not twelve. It is f
 `cohorte_parcial` — kept in the counts, excluded from every comparison between vintages, where it
 would put nine months against twelve.
 
-### 7. Size bands are quartiles *within* the cohort
+### 7. Size bands are quartiles *within* the cohort — and the tie-break is not decorative
 
 A $100,000 loan was large in 1993 and mid-sized in 2025. Quartiling across the whole history would
 turn the size band into a disguised clock, and the cut would measure inflation and programme growth
-rather than risk. `ntile(4) OVER (PARTITION BY anio_fiscal ORDER BY importe_aprobado)`.
+rather than risk. So: `ntile(4) OVER (PARTITION BY anio_fiscal ORDER BY importe_aprobado …)`.
+
+**The `…` is the part that matters, and it was added in phase 6 after the pipeline was caught being
+non-deterministic.** Approved amounts cluster on round numbers — $50,000, $150,000, $500,000 — so
+ordering by amount alone leaves thousands of ties, and `ntile` splits them by whatever order the
+rows happen to arrive in. DuckDB does not guarantee that order across runs when it reads four files
+in parallel. Rebuilding the database changed **half the rows** of `curva_por_importe.csv`.
+
+The fix orders by `importe_aprobado, fecha_aprobacion, plazo_meses, estado, fecha_fallido,
+lender_id, naics`. `estado` and `fecha_fallido` are in that list deliberately: any tie that survives
+is then between loans with the same outcome, so moving them between quartiles cannot move the curve.
+
+A second, smaller source of drift was found the same way: `sum(importe_aprobado)` over millions of
+doubles is not associative under parallel execution, so `usd_en_riesgo` serialised as
+`3834629259.01` on one run and `3834629259.0099998` on the next. Nothing analytical changed; the
+CSV diff was pure noise. Both sums are now rounded to cents.
+
+> **How it was caught:** by rebuilding the database twice and diffing the sha256 of every exported
+> file, not by reading the code. The README promises a third party can reproduce this; that promise
+> is only worth what the check is worth. The two-run diff is cheap and belongs in any case that
+> makes the same promise.
 
 ### 8. Borrower-identifying columns are never loaded
 

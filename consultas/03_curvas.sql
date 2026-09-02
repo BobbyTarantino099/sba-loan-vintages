@@ -29,7 +29,7 @@ CREATE OR REPLACE TABLE cohortes AS
 SELECT
   cohorte,
   count(*)                                          AS en_riesgo,
-  sum(importe_aprobado)                             AS usd_en_riesgo,
+  round(sum(importe_aprobado), 2)                    AS usd_en_riesgo,  -- ver nota en 05
   min(edad_observable)                              AS edad_min_observable,
   count(*) FILTER (WHERE fallido)                   AS fallidos_totales,
   count(*) FILTER (WHERE fallido_sin_fecha_util)    AS fallidos_sin_fecha,
