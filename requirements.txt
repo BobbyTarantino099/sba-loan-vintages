@@ -1,0 +1,14 @@
+# Dependencies of the case pipeline.
+#
+# These four are what the scripts actually import — not an aspirational list.
+# Check with:  grep -rhE "^(import|from) " notebooks/*.py | sort -u
+#
+# Install:  pip install -r requirements.txt
+
+pandas          # procesar · analizar · verificar · graficos
+numpy           # procesar · analizar · verificar · graficos
+matplotlib      # graficos · estilo
+python-docx     # build_docx.py  (imported as `docx`)
+
+# Node dependencies live in notebooks/package.json (pptxgenjs, for build_pptx.js).
+# Install:  npm install --prefix notebooks

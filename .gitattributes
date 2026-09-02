@@ -1,0 +1,8 @@
+# Normaliza finales de linea: el analisis se genero en Linux y se re-ejecuta en Windows.
+# Sin esto, cada re-ejecucion marca los CSV de salida como modificados por completo.
+* text=auto eol=lf
+
+# Binarios: no tocar.
+*.png binary
+*.pptx binary
+*.docx binary
