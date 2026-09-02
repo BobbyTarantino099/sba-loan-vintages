@@ -309,29 +309,48 @@ estilo.guardar(fig, GRAFICOS / '04_artefacto_de_politica.png')
 # enteros x10.000 y edades implícitas por índice. Los tres CSV equivalentes pesan 283 KB,
 # que es demasiado para hacérselo descargar a un navegador.
 edades = list(range(0, 121, 3))
+
+# Este archivo cruza a la capa L2, que va en INGLES. Los nombres de tramo que trae `curvas` son
+# codigos internos del pipeline, en español y con prefijo numerico para que ordenen solos. La
+# traduccion se hace AQUI, en el punto de traspaso, y no en el componente del sitio: si viviera
+# alli, el sitio tendria que saber como nombra sus tramos el pipeline de un caso concreto.
+DIMENSIONES = {
+    'global':  ('all',  {'todos': 'All loans'}),
+    'plazo':   ('term', {'01 <= 7a': '7 years or less', '02 7-10a': '7 to 10 years',
+                         '03 10-20a': '10 to 20 years', '04 > 20a': 'Over 20 years'}),
+    'importe': ('size', {'01 Q1 menor': 'Smallest quarter', '02 Q2': 'Second quarter',
+                         '03 Q3': 'Third quarter', '04 Q4 mayor': 'Largest quarter'}),
+}
+# `unknown` no aparece en ningun mapa a proposito: son 1.442 prestamos con plazo implausible
+# (cero, o mas de 30 anos). Estan en la curva global, que es la que cuenta el total, y fuera del
+# corte por plazo, donde una banda llamada "desconocido" al 13,7% solo genera preguntas.
+
 series = {}
-for dimension, sql in [
-    ('global', "dimension='global'"),
-    ('plazo', "dimension='plazo'"),
-    ('importe', "dimension='importe'"),
-]:
+for dimension, (clave_en, etiquetas) in DIMENSIONES.items():
     filas = tabla(f"""
         SELECT cohorte, nivel, edad, tasa_acum_pct FROM curvas
-        WHERE {sql} AND edad <= 120 AND observable ORDER BY cohorte, nivel, edad
+        WHERE dimension = '{dimension}' AND edad <= 120 AND observable
+        ORDER BY cohorte, nivel, edad
     """)
     for (cohorte, nivel), grupo in filas.groupby(['cohorte', 'nivel']):
+        etiqueta = etiquetas.get(str(nivel))
+        if etiqueta is None:
+            continue
         por_edad = dict(zip(grupo.edad, grupo.tasa_acum_pct))
         # None donde la cohorte deja de ser legible: el explorador corta la línea ahí
         # en vez de dibujar una caída falsa hasta cero.
-        series.setdefault(dimension, {}).setdefault(str(nivel), {})[str(cohorte)] = [
+        series.setdefault(clave_en, {}).setdefault(etiqueta, {})[str(cohorte)] = [
             None if e not in por_edad else round(por_edad[e] * 10000) for e in edades
         ]
 
 destino = TABLAS / 'explorador-anadas.json'
 destino.write_text(json.dumps({
-    'edades': edades,
-    'escala': 10000,
-    'unidad': 'cumulative charge-off rate, %',
+    'ages': edades,
+    'scale': 10000,
+    'unit': 'cumulative charge-off rate, %',
+    'cuts': [{'key': 'all', 'label': 'All loans'},
+             {'key': 'term', 'label': 'By contracted term'},
+             {'key': 'size', 'label': 'By loan size, within vintage'}],
     'series': series,
 }, separators=(',', ':')), encoding='utf-8')
 
