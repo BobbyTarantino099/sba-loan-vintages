@@ -121,6 +121,87 @@ downloading anything.
 | `sba_7a_2020-2026_2026-06-30.csv` | 181,130,871 | `6c1e9132b5141a19f82bdc8ccafb86c9a01662461cad41ddb36a3cf409d8a4fe` |
 | `sba_diccionario_oficial.xlsx` | 24,529 | `777ba97a6f92e325f79905610816cb59d41f1971cd964c54dc30ef02730a3941` |
 
+---
+
+## Source 2: SBA quarterly loan programme performance report
+
+Added in phase 6, to close the external reconciliation that phases 2 and 4 had to leave open.
+
+- **Link:** https://legacy.sba.gov/document/report-small-business-administration-loan-program-performance
+- **File:** `WebsiteReports_FY25Q3.zip` — eleven PDFs, cut-off 2025-06-30.
+- **Publisher:** U.S. Small Business Administration, the same agency, but a **different reporting
+  pipeline**: this is the programme's own performance reporting, not the FOIA disclosure extract.
+  That is what makes it a usable check rather than a circular one.
+- **Licence:** U.S. Government Works — public domain.
+- **What is used:** three numbers per fiscal year from Tables 2, 3 and 10 — approved loan count,
+  gross approval amount, and total recovery rate — for the 7(a) Regular programme only.
+- **Saved as:** `datos/crudos/sba_desempeno_2016-2025_2025-06-30.csv`, **transcribed, not
+  redistributed**. The source is a zip of eleven PDFs and the case uses thirty numbers from it; the
+  original is linked rather than copied, the same treatment the football case gave FIFA's census.
+
+> **Why this was recorded as unavailable until now.** The document page publishes the file with a
+> *relative* link, `/sites/default/files/2025-09/WebsiteReports_FY25Q3.zip`. Resolved against
+> `www.sba.gov` — the obvious host — it returns 404. It resolves only against `legacy.sba.gov`,
+> where the page itself lives after a redirect. The check was not impossible; the first attempt
+> simply resolved the link against the wrong host and the 404 was taken at face value.
+
+### Role in this case: reconciliation, not analysis
+
+This source **never enters the analysis**. It is used once, in `verificar.py` V1, to answer "is the
+population right?" — and once in V1b to bound how far gross loss sits from net.
+
+**Job in this case** — it does exactly one thing and it does it independently:
+
+| Fiscal year | Our approvals | SBA's published count | Difference |
+|---|---|---|---|
+| 2016 | 64,074 | 64,074 | 0 |
+| 2017 | 62,430 | 62,431 | −1 |
+| 2018 | 60,354 | 60,353 | +1 |
+| 2019 | 51,907 | 51,908 | −1 |
+| 2020 | 42,298 | 42,302 | −4 |
+| 2021 | 51,856 | 51,853 | +3 |
+| 2022 | 47,678 | 47,681 | −3 |
+| 2023 | 57,362 | 57,362 | 0 |
+| 2024 | 70,242 | 70,242 | 0 |
+
+Maximum deviation: **4 loans** against cohorts of 42,000 to 70,000 — under 0.01%, and exact in three
+of the nine years.
+
+On amounts the reconciliation is **systematically 0.7–1.7% low, and always in the same direction.**
+That constant sign is the useful part: the report defines gross approval as the original amount
+**plus any subsequent increases** made in that fiscal year, which the FOIA extract does not carry. A
+small deviation with a constant sign and a documented cause is stronger evidence than a smaller one
+that wanders.
+
+**FY2025 is deliberately excluded** from the comparison: the report is cut at 2025-06-30 and our
+extract runs to 2026-06-30, so the two are not measuring the same year.
+
+### What it also bounds: gross against net
+
+Table 10 publishes total recovery rates on purchased 7(a) loans. Mature purchase cohorts recover
+**34–39%** and are still accruing:
+
+| Purchase year | Recovered |
+|---|---|
+| 2016 | 36.98% |
+| 2017 | 34.33% |
+| 2018 | 37.23% |
+| 2019 | 38.60% |
+| 2020 | 37.22% |
+| 2021–2025 | 27.4% falling to 4.2% — still maturing |
+
+**This does not let the case compute a net figure, and it does not.** The recovery rate is a
+percentage of the amount SBA *purchased*, indexed by *purchase* year; the case's rates are on the
+amount *approved*, indexed by *approval* year. Different numerators on different axes. What it
+supports is a statement of order of magnitude — the gross figures overstate the fund's eventual loss
+by something on the order of a third — and nothing more precise than that.
+
+### Privacy and licence
+
+Public domain, no personal data, aggregate figures only.
+
+---
+
 ### Potential biases, written down before the analysis
 
 Six, in rough order of how much they could bend the conclusion.

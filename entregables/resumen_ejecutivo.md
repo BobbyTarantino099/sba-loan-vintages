@@ -60,16 +60,19 @@ in, not a lever to pull.
 
 These are SBA-guaranteed loans. The **shape** of the maturation curve transfers to unguaranteed
 private credit; the **level** does not, and nothing here can calibrate that gap. Every figure is
-gross loss — the source records no recoveries, so the fund's actual loss is lower by an unknown
-amount. Nothing here is causal: the case describes how vintages behave, not what moves them, and
-2007 is not bad "because of the crisis". And the projection assumes the loss timing of 1991–2014
-still holds; if today's borrowers fail on a different schedule, the method is wrong in a way it
-cannot detect on its own.
+gross loss. SBA's own recovery tables put mature cohorts at 34–39% recovered, so a fund's eventual
+loss is roughly a third lower than these numbers — a bound, not a conversion, since recovery is
+measured against a different amount and on a different year axis. Nothing here is causal: the case
+describes how vintages behave, not what moves them, and 2007 is not bad "because of the crisis". And
+the projection assumes the loss timing of 1991–2014 still holds; if today's borrowers fail on a
+different schedule, the method is wrong in a way it cannot detect on its own.
 
-One check is open rather than passed. SBA publishes aggregate performance tables that would confirm
-our population in a single line, and the archive their own page links to returns a 404. In its place
-the population was recounted independently from the raw files and checked against the programme's
-published rules. That is internal consistency, not external reconciliation, and it stays on this
-list until it is closed.
+The population itself is not in doubt. It reconciles against SBA's published performance tables — a
+different reporting pipeline from the disclosure extract this case is built on — with a maximum
+deviation of **four loans** across nine fiscal years of 42,000 to 70,000 each, and exactly in three
+of them. Amounts sit 0.7–1.7% below the published figures in every single year, which the report's
+own definition explains: it counts loan increases made after approval, and the extract does not
+carry them. A deviation with a constant sign and a documented cause is better evidence than a
+smaller one that wanders.
 
 *Full method, checks and decision log: `CASO.md` in the case repository.*

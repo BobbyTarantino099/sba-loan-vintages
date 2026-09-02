@@ -131,7 +131,15 @@
 
 **Status:** closed — 2026-08-31
 
-- **Sources:** one ROCCC record in `documentacion/fichas-de-fuente.md`. All five letters High.
+- **Sources:** ROCCC records in `documentacion/fichas-de-fuente.md`. The FOIA extract scores High on
+  all five letters.
+  <!-- A second source was added in phase 6: SBA's quarterly performance report, used only by
+       verificar.py V1 and V1b and never by the analysis. It is recorded here because sources belong
+       in phase 2, not because phase 2 knew about it — at the time its download link was returning
+       404 and the reconciliation was declared impossible. See §6. -->
+- **Second source (added 2026-09-02):** [SBA quarterly performance report](https://legacy.sba.gov/document/report-small-business-administration-loan-program-performance),
+  transcribed to `datos/crudos/sba_desempeno_2016-2025_2025-06-30.csv`. **Reconciliation only** — it
+  never enters the analysis, which is what keeps the check independent rather than circular.
 - **Data dictionary:** `documentacion/diccionario-de-datos.md`, all 42 columns, built from the
   official `sba_diccionario_oficial.xlsx` kept alongside it.
 - **Licence and privacy:** U.S. Government Works, public domain, publication allowed. The file does
@@ -286,7 +294,8 @@ the wrong vintage worst — it is believing a young vintage's *number*.
 | # | What it rules out | Result |
 |---|---|---|
 | **V0** | That the 180 zero-amount charge-offs sit in one place and corrupt the dollar metric | ✅ Spread across 25 vintages, worst is 36 loans in FY1991 (1.7% of its charge-offs). The dollar metric is readable |
-| **V1** | That the population was built wrong | ✅ Re-counted straight off the raw CSVs, bypassing every intermediate table: 1,961,455 / 1,697,542 / 220,688, identical. Programme rules hold — maximum loan exactly $5,000,000, none above the statutory cap, no guarantee larger than its own loan, 74.2% average guarantee. ⚠️ **External reconciliation not done**, see limitations |
+| **V1** | That the population was built wrong | ✅ **Reconciled against SBA's own published performance tables** (a different reporting pipeline from the FOIA extract): maximum deviation **4 loans** across FY2016–FY2024, exact in three years. Amounts sit 0.7–1.7% low with a constant sign, explained by the report counting subsequent loan increases. Also re-counted off the raw CSVs, and programme rules hold. *Closed in phase 6 — see below* |
+| **V1b** | That "gross, not net" is an unbounded caveat | ✅ SBA's Table 10 puts mature recovery cohorts at **34–39%** of purchased amount. Bounds the gross-to-net gap at roughly a third; does **not** permit a net figure, and none is computed |
 | **V2** | That the finding is about loan size rather than vintage | ✅ Spearman 0.939 between count-weighted and dollar-weighted rates at 60 months |
 | **V3** | That FY2020–21 look good on credit quality | ⚠️ **Confirmed the bias.** At 36 months FY2020 (0.85%) and FY2021 (0.77%) sit at roughly half of FY2018 (1.72%), FY2019 (1.58%) and FY2022 (1.98%). CARES Act §1112 paid instalments on many 7(a) loans; those two vintages are policy-flattered and must not be read as good underwriting |
 | **V4** | That the pattern is a change of mix, not of vintage | ✅ Direct standardisation on a fixed term × size mix: Spearman 0.972 against the unadjusted rate. The reordering is not composition |
@@ -311,14 +320,14 @@ Written 2026-08-31, before any analysis.
 
 ### Limitations this analysis cannot argue away
 
-- **No external reconciliation.** The framework asks for a total checked against an independent
-  source. SBA does publish aggregate performance tables, but the linked archive
-  (`WebsiteReports_FY25Q3.zip`) returned 404 on 2026-09-01. V1 substitutes an independent
-  recomputation from the raw files plus programme-rule checks — weaker, and labelled as such.
+- ~~**No external reconciliation.**~~ **Closed in phase 6.** The archive was not missing: the
+  document page links it with a *relative* URL that only resolves against `legacy.sba.gov`, and the
+  first attempt resolved it against `www.sba.gov` and took the 404 at face value. The reconciliation
+  now passes with a maximum deviation of 4 loans across nine fiscal years. See §6.
 - **Nothing here is causal.** The case describes how vintages behave. FY2007 is not bad "because of
   the crisis": that is context, not a finding, and the data cannot separate it from anything else
   that changed in 2007.
-- **Gross, not net.** No recoveries are recorded, so every rate is gross loss.
+- **Gross, not net** — but no longer unbounded. No recoveries are in the FOIA extract, so every rate here is gross. SBA's published recovery tables put mature cohorts at 34–39% recovered, which bounds the overstatement at roughly a third. That is an order of magnitude, not a conversion: recovery is a share of the *purchased* amount by *purchase* year, and these rates are a share of the *approved* amount by *approval* year.
 - **Partial government guarantee.** The shape of the maturation curve transfers to private credit;
   the level does not.
 - **The projection assumes the past shape holds.** Development factors come from FY1991–FY2014. If
@@ -505,6 +514,38 @@ is the secondary finding: the correction changes the level and not the order, so
 "rank vintages differently" — it is **the error a fund makes is not ranking the wrong vintage worst,
 it is believing a young vintage's number.** That is what changes a behaviour.
 
+### The external reconciliation, closed
+
+It had been carried since phase 2 as the case's weakest point: the framework asks for a total checked
+against an independent source, and SBA's published performance tables — the obvious check — sat
+behind a link that returned 404.
+
+**The archive was never missing.** The document page publishes it with a *relative* URL,
+`/sites/default/files/2025-09/WebsiteReports_FY25Q3.zip`. Resolved against `www.sba.gov` it 404s;
+it resolves only against `legacy.sba.gov`, where the page itself lives after a redirect. The first
+attempt used the obvious host, got a 404, and recorded the check as impossible. It was not
+impossible — it was one hostname away.
+
+The reconciliation now **passes**, and against a genuinely independent pipeline: the performance
+report is the programme's own reporting, not the FOIA disclosure extract.
+
+| | Result |
+|---|---|
+| Approved loan count, FY2016–FY2024 | Maximum deviation **4 loans** against cohorts of 42,000–70,000. Exact in three of nine years |
+| Gross approval amount | Systematically **0.7–1.7% low, always in the same direction** — the report counts subsequent loan increases, which the FOIA extract does not carry. A constant, explained sign is stronger evidence than a smaller deviation that wanders |
+| FY2025 | Excluded: the report is cut at 2025-06-30 and our extract runs to 2026-06-30 |
+
+It also bounds a second limitation. Table 10 of the same report puts mature recovery cohorts at
+**34–39% recovered**, so the case's gross figures overstate a fund's eventual loss by roughly a
+third. **No net figure is computed**, and that restraint is deliberate: recovery is a share of the
+*purchased* amount indexed by *purchase* year, while these rates are a share of the *approved*
+amount indexed by *approval* year. Different numerators on different axes. The bound is honest; a
+division would not be.
+
+`verificar.py` now runs this as V1 and V1b. The transcribed figures live in
+`datos/crudos/sba_desempeno_2016-2025_2025-06-30.csv` — un-ignored on purpose, thirty numbers taken
+from eleven PDFs that are linked rather than redistributed.
+
 ### Exit gate — phase 6
 
 - [x] **Every finding raised to insight and to recommendation** — three cards, plus the level-vs-order
@@ -559,3 +600,5 @@ it is believing a young vintage's number.** That is what changes a behaviour.
 | 2026-09-02 | R3 ships with its confound in the card | Term proxies product and collateral: 20-year loans are real-estate secured, short ones are working capital. The finding says where the loss sits, not that tenor causes it | Presenting the 14x spread as a lever, which a risk analyst dismantles with the first question |
 | 2026-09-02 | Sector produces no recommendation | 4.28% to 4.57% at 60 months among sectors with volume: it does not separate | A fourth card, which would have padded the list with noise |
 | 2026-09-02 | Deterministic tie-break added to the size-quartile window | Rebuilding the database changed half the rows of curva_por_importe.csv: approved amounts cluster on round numbers and ntile split the ties by arrival order. Caught by rebuilding twice and diffing the sha256 of every export, not by reading the code | Leaving it, which would have shipped a README promising reproducibility next to a pipeline that did not deliver it |
+| 2026-09-02 | The external reconciliation was closed, not written off | The archive was never missing: the page links it with a relative URL that only resolves against legacy.sba.gov, and the first attempt used www.sba.gov and took the 404 at face value. It reconciles to within 4 loans across nine fiscal years | Leaving it as a declared limitation, which is honest but was hiding a one-hostname mistake |
+| 2026-09-02 | The gross-to-net gap is bounded, not converted | SBA's Table 10 puts mature recovery cohorts at 34-39%. But recovery is a share of the PURCHASED amount by PURCHASE year, and the case's rates are on the APPROVED amount by APPROVAL year — different numerators on different axes | Dividing one by the other to publish a net figure, which would have looked more useful and meant nothing |

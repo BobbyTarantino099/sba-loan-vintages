@@ -137,16 +137,17 @@ Four things the analysis looked at and will not turn into advice.
 - **Why any vintage performed as it did.** FY2007 is not bad "because of the crisis" — that is
   context. This file cannot separate the crisis from everything else that changed in 2007, and no
   causal claim is made anywhere in the case.
-- **Net loss.** Every figure here is gross. The source records no recoveries, so the fund's actual
-  loss is lower than these numbers by an unknown amount.
+- **A net-loss figure.** Every rate here is gross. SBA's own recovery tables put mature cohorts at
+  **34–39% recovered**, so a fund's eventual loss is roughly a third lower than these numbers —
+  but that is a bound, not a conversion. Recovery is a share of the *purchased* amount indexed by
+  *purchase* year; these rates are a share of the *approved* amount indexed by *approval* year.
+  Dividing one by the other would produce a number with no defensible meaning, so none is given.
 - **A number for FY2024 or FY2025.** They exist in the tables as a labelled gap, on purpose.
 
 ## What would strengthen this materially
 
-- **The external reconciliation.** SBA publishes aggregate performance tables that would confirm the
-  population in one line; the archive their own page links to returns 404. Until that is closed, the
-  population rests on an independent recount from the raw files plus programme-rule checks.
-- **Recovery data**, to move from gross to net.
+- **Loan-level recovery data**, to move from a bound to an actual net figure. The published rates
+  are aggregate and on a different axis; only loan-level recoveries would close this properly.
 - **Quarterly rather than annual vintages**, which would sharpen the 2008 and 2020 boundaries where
   the interesting behaviour sits.
 - **An unguaranteed comparison book.** The shape of these curves transfers to private credit; the
@@ -157,7 +158,8 @@ Four things the analysis looked at and will not turn into advice.
 1. Re-run the pipeline on the FY2026 Q3 file when it publishes and record the drift. That is the
    first real test of R1.
 2. Add the term-band benchmarks of R3 to the quarterly monitoring pack.
-3. Close the external reconciliation, or write it off explicitly.
+3. ~~Close the external reconciliation.~~ **Done.** It now passes against SBA's published
+   performance tables with a maximum deviation of 4 loans across nine fiscal years.
 
 *Full method, checks and decision log: `CASO.md` in the case repository. Cleaning decisions:
 `bitacora-limpieza.md`.*

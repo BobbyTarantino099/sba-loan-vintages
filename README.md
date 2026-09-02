@@ -81,9 +81,10 @@ Full cards, each with evidence, expected impact, measurement, risk and effort, i
 
 ## Data
 
-| Source | Period | Volume | Licence |
+| Source | Job in the case | Period / volume | Licence |
 |---|---|---|---|
-| [SBA 7(a) FOIA loan-level extract](https://data.sba.gov/dataset/7a-504-foia) | FY1991–FY2026, as of 2026-06-30 | 1,961,455 approvals · 42 columns · 901 MB | U.S. Government Works (public domain) |
+| [SBA 7(a) FOIA loan-level extract](https://data.sba.gov/dataset/7a-504-foia) | The whole analysis | FY1991–FY2026, as of 2026-06-30 · 1,961,455 approvals · 42 columns · 901 MB | U.S. Government Works |
+| [SBA quarterly performance report](https://legacy.sba.gov/document/report-small-business-administration-loan-program-performance) | Reconciliation only — never enters the analysis | FY2016–FY2025, as of 2025-06-30 · 30 figures transcribed | U.S. Government Works |
 
 **It can answer the question** because every disbursed loan carries either a terminal outcome or an
 explicit still-alive marker, plus the dates needed to place the event on a timeline. The single most
@@ -91,7 +92,15 @@ consequential field is `EXEMPT`, which the publisher defines as *disbursed but n
 full or charged off* — that is not missing data, it is the censoring indicator handed over
 explicitly, and dropping it would delete almost the entire recent population.
 
-**It cannot answer**: net loss (no recoveries are recorded, so every figure is gross); the level of
+**The population reconciles against an independent source.** SBA's quarterly performance report is
+the programme's own reporting rather than the FOIA disclosure pipeline, and our approval counts
+match it to within **four loans** across FY2016–FY2024 — exactly, in three of those nine years.
+Amounts run 0.7–1.7% low in every year, which the report's own definition accounts for: it counts
+loan increases made after approval, and the extract carries only the original amount.
+
+**It cannot answer**: a net loss figure (the extract records no recoveries, so every rate here is
+gross — SBA's published recovery tables bound the overstatement at roughly a third, but they are
+measured on a different amount and a different year axis, so no conversion is attempted); the level of
 loss in unguaranteed private credit (these loans carry a partial government guarantee — the curve's
 shape transfers, its level does not); sector before FY2001 (`NaicsCode` is absent for 55–57% of
 earlier approvals); or *why* any vintage behaved as it did — no causal claim is made anywhere.

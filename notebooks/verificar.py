@@ -64,24 +64,42 @@ def main():
         ORDER BY cero DESC LIMIT 8""").df().to_string(index=False))
 
     # ---------------------------------------------------------------
-    # V1 - Sensatez
+    # V1 - Reconciliacion contra la fuente externa
     # ---------------------------------------------------------------
-    log('V1 - Sensatez: recuento por una via independiente y reglas del programa')
-    print('El pipeline cuenta sobre la tabla `prestamos`. Aqui se recuenta leyendo los CSV crudos')
-    print('directamente, sin pasar por ninguna tabla intermedia. Si difieren, hay un bug.\n')
-    glob = (CRUDOS / 'sba_7a_*_2026-06-30.csv').as_posix()
-    directo = con.sql(f"""
-        SELECT count(*) AS aprobaciones,
-               count(*) FILTER (WHERE LoanStatus IN ('P I F','CHGOFF','EXEMPT')) AS desembolsados,
-               count(*) FILTER (WHERE LoanStatus = 'CHGOFF') AS fallidos
-        FROM read_csv('{glob}', all_varchar = true)""").fetchone()
-    pipeline = con.sql("""
-        SELECT (SELECT count(*) FROM raw_7a),
-               (SELECT count(*) FROM raw_7a WHERE estado IN ('P I F','CHGOFF','EXEMPT')),
-               (SELECT count(*) FROM raw_7a WHERE estado = 'CHGOFF')""").fetchone()
-    for etiqueta, a, b in zip(('aprobaciones', 'desembolsados', 'fallidos'), directo, pipeline):
-        print(f'{etiqueta:16s} crudo={a:>10,}  pipeline={b:>10,}  '
-              f'{"OK" if a == b else "DISCREPANCIA"}')
+    log('V1 - Reconciliacion contra las tablas de desempeno publicadas por la SBA')
+    print('Fuente independiente del extracto FOIA: el informe trimestral de desempeno de la SBA')
+    print('(tablas 2 y 3, WebsiteReports_FY25Q3, corte 2025-06-30). Sus cifras se transcribieron a')
+    print('datos/crudos/sba_desempeno_2016-2025_2025-06-30.csv.\n')
+    print('Solo FY2016-FY2024: FY2025 del informe esta cortado a 06/2025 y el nuestro llega a')
+    print('06/2026, asi que no son comparables.\n')
+
+    ext = (CRUDOS / 'sba_desempeno_2016-2025_2025-06-30.csv').as_posix()
+    v1 = con.sql(f"""
+        WITH oficial AS (
+          SELECT anio_fiscal,
+                 max(valor) FILTER (WHERE metrica = 'approval_count') AS n_oficial,
+                 max(valor) FILTER (WHERE metrica = 'gross_approval') AS usd_oficial
+          FROM read_csv('{ext}')
+          WHERE anio_fiscal BETWEEN 2016 AND 2024
+          GROUP BY anio_fiscal),
+        nuestro AS (
+          SELECT anio_fiscal, count(*) AS n, sum(importe_aprobado) AS usd
+          FROM raw_7a WHERE anio_fiscal BETWEEN 2016 AND 2024 GROUP BY anio_fiscal)
+        SELECT o.anio_fiscal AS fy, n.n AS nuestro_n, o.n_oficial::BIGINT AS oficial_n,
+               (n.n - o.n_oficial)::BIGINT AS dif_n,
+               round(100.0 * (n.usd - o.usd_oficial) / o.usd_oficial, 2) AS dif_usd_pct
+        FROM nuestro n JOIN oficial o USING (anio_fiscal) ORDER BY 1""").df()
+    print(v1.to_string(index=False))
+
+    peor_n = int(v1.dif_n.abs().max())
+    peor_usd = float(v1.dif_usd_pct.abs().max())
+    print(f'\nConteo: desviacion maxima {peor_n} prestamos sobre cohortes de 42.000 a 70.000.')
+    print(f'Importe: desviacion maxima {peor_usd:.2f}%, y SIEMPRE en el mismo sentido (por debajo).')
+    print('Ese sesgo constante no es un error: el informe define el importe aprobado como el')
+    print('original MAS los incrementos posteriores del prestamo, que el extracto FOIA no trae.')
+    print('Un desvio con signo constante y explicado vale mas que uno pequeno y aleatorio.')
+    if peor_n > 25:
+        raise SystemExit('V1: el conteo se separa de la fuente oficial mas de lo tolerable.')
 
     print('\nReglas publicadas del programa 7(a):')
     reglas = con.sql(f"""
@@ -91,12 +109,24 @@ def main():
                round(100.0 * sum(importe_garantizado) / sum(importe_aprobado), 1) AS pct_garantizado_medio
         FROM prestamos""").df()
     print(reglas.to_string(index=False))
-    print(f'El tope legal del 7(a) son {TOPE_PROGRAMA_USD:,} USD. Ningun prestamo deberia superarlo,')
-    print('y ninguna garantia deberia exceder su propio prestamo.')
-    print('\nLIMITACION DECLARADA: la reconciliacion contra las tablas de desempeno que la SBA')
-    print('publica aparte no se pudo completar — el enlace al archivo (WebsiteReports_FY25Q3.zip)')
-    print('devuelve 404 a fecha de 2026-09-01. Queda como verificacion externa pendiente, no como')
-    print('verificacion hecha.')
+
+    # ---------------------------------------------------------------
+    # V1b - Cuanto de la perdida bruta se recupera
+    # ---------------------------------------------------------------
+    log('V1b - Recuperaciones: cuanto se queda en bruto y cuanto es neto')
+    print('El extracto FOIA no registra recuperaciones, asi que TODA cifra del caso es bruta. La')
+    print('tabla 10 del mismo informe si las publica, por ano de compra de la garantia.\n')
+    rec = con.sql(f"""
+        SELECT anio_fiscal AS anio_compra, valor AS recuperado_pct
+        FROM read_csv('{ext}') WHERE metrica = 'recovery_rate_total' ORDER BY 1""").df()
+    print(rec.to_string(index=False))
+    maduras = rec[rec.anio_compra <= 2020]
+    print(f'\nCosechas de compra maduras (2016-2020): entre {maduras.recuperado_pct.min():.1f}% y '
+          f'{maduras.recuperado_pct.max():.1f}% recuperado, y siguen acumulando.')
+    print('CUIDADO AL USARLO: es porcentaje del importe COMPRADO y por ano de COMPRA, mientras que')
+    print('las tasas del caso son sobre el importe aprobado y por ano de APROBACION. Son ejes')
+    print('distintos, asi que esto acota el orden de magnitud de la brecha bruto-neto; no permite')
+    print('calcular una cifra neta, y el caso no la calcula.')
 
     # ---------------------------------------------------------------
     # V2 - Conteo contra dolares

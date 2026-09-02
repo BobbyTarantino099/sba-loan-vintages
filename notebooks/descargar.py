@@ -9,6 +9,16 @@ Si lo ejecutas de nuevo y los hashes no coinciden con los de `documentacion/fich
 tienes datos más recientes que los del caso. Eso es esperado, no un error: las cifras cambiarán y
 hay que rehacer la reconciliación de la fase 3 antes de dar por bueno nada.
 
+La SEGUNDA fuente del caso no se descarga aquí. El informe trimestral de desempeño de la SBA
+(https://legacy.sba.gov/document/report-small-business-administration-loan-program-performance)
+es un zip de once PDF del que el caso usa treinta números; están transcritos en
+`datos/crudos/sba_desempeno_2016-2025_2025-06-30.csv`, que sí se versiona. Se enlaza el original
+en vez de redistribuirlo.
+
+Ojo con ese enlace: la página lo publica con una URL **relativa**, y solo resuelve contra
+`legacy.sba.gov`. Contra `www.sba.gov` devuelve 404 — que es exactamente por lo que esta
+verificación estuvo declarada como imposible hasta la fase 6.
+
 Uso:  python notebooks/descargar.py
       python notebooks/descargar.py --solo-hashes   (no descarga; solo huella de lo que ya hay)
 """
