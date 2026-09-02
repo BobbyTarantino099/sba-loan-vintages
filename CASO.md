@@ -5,7 +5,7 @@
 
 # Case: SBA 7(a) loan vintages
 
-**Status:** Phase 7 — Portfolio (next). Phases 0 to 6 closed.
+**Status:** ✅ Complete — all 8 phases closed. Published 2026-09-02.
 **Last updated:** 2026-09-02
 
 ## 0. Choose (decision sheet)
@@ -569,12 +569,71 @@ from eleven PDFs that are linked rather than redistributed.
 
 ## 7. Portfolio
 
-**Status:** open
+**Status:** closed — 2026-09-02
 
-- Hand over to the site: front-matter Markdown (template 7 of `plantillas.md`) plus figures and
-  aggregate tables. Only that crosses; this file stays here and is linked.
-- If an aggregate the site needs weighs megabytes, the aggregation is incomplete — go back to
-  phase 4 and summarise further.
+Published at
+[juanesportfolio.com/cases/sba-loan-vintages](https://juanesportfolio.com/cases/sba-loan-vintages/).
+This repository is public. What crossed to the site: the L2 Markdown, four figures, and a 72 KB
+JSON. What stayed: this file, the cleaning log, the queries, the raw data.
+
+### The first interactive piece on the site
+
+`site/src/components/VintageExplorer.astro` — the site's **first client-side JavaScript**. Until
+now `src/` did not contain a single `<script>` tag, and that sobriety is worth keeping: the
+component has no dependencies, no framework and no charting library. Thirty-five polylines of
+hand-drawn SVG is less code than configuring a library would be.
+
+It draws every vintage at once in faint grey and lets the reader pick a cut and highlight one. The
+recent curves visibly stop short of the old ones, so **right-censoring — the whole mechanism of the
+case — is seen rather than explained.**
+
+The contract grew by one **optional** field, `explorer`. That it is optional is the point: it was
+added when two cases were already published, and a new mandatory field would have broken the entire
+site to enable a feature one case uses. `site/docs/arquitectura.html` was updated to say so, since
+this is the first change to the contract since it was written.
+
+### Two bugs that only looking caught
+
+- **The axis label sat on top of the last tick.** Right-aligned, "months since approval" landed on
+  the `120` — the one number a reader needs at that end. Moved to its own centred line.
+- **The buttons had no styling at all.** Astro scopes component CSS by stamping an attribute onto
+  the elements *in the template*; these buttons are created by JavaScript at runtime, so they never
+  receive it and the scoped rules never matched. In dark mode they rendered as the browser default:
+  pale pills on a black page. The `<select>` *is* in the template, so it looked right — which is
+  what made the bug only half-visible. Fixed with `:global()` under `.explorer`.
+
+### Coverage matrix, generated from the three front-matters
+
+| Case | Problem type | Tools | Domain | What it demonstrates |
+|---|---|---|---|---|
+| Steam price & reception | find patterns | Python · pandas | Video games | Ruling out the obvious alternative explanation before publishing |
+| Football transfer market | find patterns | SQL · DuckDB | Sports finance | A hypothesis written down first and published when contradicted |
+| **SBA loan vintages** | **predict** | **SQL · DuckDB** | **Private credit** | **Correcting a rate that is not comparable across ages — and refusing to publish what the method cannot support** |
+
+Three domains, three problem types across two values, and the first case in the portfolio whose
+deliverable is a projection rather than a description.
+
+### Exit gate — portfolio
+
+- [x] **Coverage matrix filled; each case demonstrates something different** — above.
+- [x] **The contract is met: full front-matter and the seven sections in order.**
+- [x] **The L1 card is generated from the front-matter** — no hand-written parallel version.
+- [x] **The site build passes, and a missing mandatory field breaks it.** Verified by *removing*
+      `problemType` and confirming `InvalidContentEntryDataError`, then restoring it. A schema
+      nobody has watched fail is an assumption, not a check.
+- [x] **The site carries no raw or intermediate data** — four figures and 72 KB of aggregates.
+- [x] **No repository holds sensitive data, credentials or local paths** — re-run immediately
+      before making the repository public, not from memory.
+- [x] **At least one case where the result contradicted the hypothesis** — this one, twice.
+- [ ] ⚠️ **Read on a real phone.** I rendered the page at 390 px and found the body text running
+      past the right edge — **and the already-published football case does exactly the same at that
+      width.** So it is a pre-existing, site-wide layout problem rather than something this case
+      introduced, and fixing it means looking at the article layout for all three cases, not
+      patching one page. Flagged rather than silently fixed. A rendered viewport is also not a real
+      phone.
+- [ ] ⚠️ **Three rehearsed versions of the talk** — the 3-minute script exists with its Q&A; the
+      30-minute version is not written. Open since phase 6.
+- [ ] ⚠️ **External feedback requested and applied** — Juanes's to do.
 
 ## Decision log
 
@@ -602,3 +661,5 @@ from eleven PDFs that are linked rather than redistributed.
 | 2026-09-02 | Deterministic tie-break added to the size-quartile window | Rebuilding the database changed half the rows of curva_por_importe.csv: approved amounts cluster on round numbers and ntile split the ties by arrival order. Caught by rebuilding twice and diffing the sha256 of every export, not by reading the code | Leaving it, which would have shipped a README promising reproducibility next to a pipeline that did not deliver it |
 | 2026-09-02 | The external reconciliation was closed, not written off | The archive was never missing: the page links it with a relative URL that only resolves against legacy.sba.gov, and the first attempt used www.sba.gov and took the 404 at face value. It reconciles to within 4 loans across nine fiscal years | Leaving it as a declared limitation, which is honest but was hiding a one-hostname mistake |
 | 2026-09-02 | The gross-to-net gap is bounded, not converted | SBA's Table 10 puts mature recovery cohorts at 34-39%. But recovery is a share of the PURCHASED amount by PURCHASE year, and the case's rates are on the APPROVED amount by APPROVAL year — different numerators on different axes | Dividing one by the other to publish a net figure, which would have looked more useful and meant nothing |
+| 2026-09-02 | `explorer` added to the contract as OPTIONAL | Two cases were already published. A new mandatory field would have broken the whole site to enable a feature one case uses. A contract that has to keep growing can only grow by optional fields | Making it mandatory and backfilling two cases that have no explorer, which would have put an empty field in their front-matter forever |
+| 2026-09-02 | The mobile overflow is reported, not patched | The football case, published weeks ago, truncates its body text at 390 px exactly the same way. It is a site-wide layout problem, so patching this one page would hide it rather than fix it | A local fix on the new page, which would have made the newest case look fine and left the other two broken |
