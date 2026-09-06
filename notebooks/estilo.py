@@ -75,7 +75,7 @@ RAMPA = ["#eaf1f9", "#c7dcf0", "#8fbce2", "#4a8bc9", "#1f5fa8"]
 #: A partir de este índice de la rampa el texto encima va en blanco.
 _RAMPA_TEXTO_BLANCO = 4
 
-FIRMA = "JEA"
+FIRMA = "JA"
 
 # ---------------------------------------------------------------------------
 # Ritmo vertical de la cabecera
