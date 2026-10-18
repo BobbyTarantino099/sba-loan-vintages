@@ -103,13 +103,13 @@ heading('What we found')
 para('A three-year-old vintage has shown you less than a quarter of what it will cost.', bold=True)
 para('Across the twenty-four vintages old enough to have finished, only 23.5% of eventual '
      'charge-offs have occurred by month 36. The median default lands at month 58 — year five, not '
-     'year three. Half the loss is still ahead at the five-year mark.')
+     'year three. More than two-fifths of the loss is still ahead at the five-year mark.')
 image('02_a_los_tres_anos.png',
       caption='Share of eventual charge-offs already recorded, by months since approval.')
 
 para('The 2023 vintage is on track to be the worst since 2010.', bold=True)
 para('It has recorded 0.75 cents of loss per dollar approved, which reads as excellent. Corrected '
-     'for age it projects to 4.24 cents, with an interquartile band of 3.28 to 6.18. Thirteen '
+     'for age it projects to 4.24 cents, with an interquartile band of 3.28 to 6.18. Twelve '
      'consecutive vintages, 2011 through 2022, landed below that. In loan-count terms the same '
      'vintage moves from 3.5% to 12.2%. The 2024 and 2025 books are published as a labelled gap '
      'rather than a number: they have realised 5.9% and 0.2% of their eventual loss, and '
@@ -121,20 +121,20 @@ image('01_lo_que_falta_por_llegar.png',
 para('2020 and 2021 look like the best underwriting in a decade. They are not.', bold=True)
 para('At the same age they default at roughly half the rate of every neighbouring vintage — 0.85% '
      'and 0.77% against 1.58% to 1.98%. Under CARES Act section 1112 the government was paying '
-     'instalments on many of these loans. A model calibrated on those two years understates '
-     'everything else by about 18%.')
+     'instalments on many of these loans. Added to a 2016–2019 calibration sample, those two '
+     'years pull its rate at 36 months from 1.83% to 1.49% — about 18% too low.')
 image('04_artefacto_de_politica.png',
       caption='Identical axes: same age, half the default rate, for a reason that is not credit.')
 
 para('What the correction does not do is reshuffle the league table.', bold=True)
-para('The five worst vintages are the same whether you read raw rates or rates at equal age. The '
-     'mistake a fund makes is not picking the wrong worst year — it is believing a young year’s '
+para('At five and seven years the five worst vintages are the same whether you read raw rates or '
+     'rates at equal age; at three years one swaps places. The mistake a fund makes is not picking the wrong worst year — it is believing a young year’s '
      'number.')
 image('03_nivel_no_orden.png',
       caption='Rank of each vintage under four readings. The order barely moves.')
 
 para('The loss concentrates in short-term, small-ticket lending.', bold=True)
-para('At 60 months, loans of seven years or less charge off at 5.67% against 0.39% for loans over '
+para('At 60 months, averaged across the 2010–2019 vintages, loans of seven years or less charge off at 5.67% against 0.39% for loans over '
      'twenty years. That is where the loss sits — though term is a proxy for product and '
      'collateral, so it is a statement about which business you are in, not a lever to pull.')
 

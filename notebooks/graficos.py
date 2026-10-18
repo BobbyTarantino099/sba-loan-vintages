@@ -207,31 +207,45 @@ r = tabla("""
 columnas = ['tasa_cruda_pct', 'tasa_36m', 'tasa_60m', 'tasa_84m']
 rangos = r[columnas].rank(ascending=False, method='min')
 peores = r.loc[rangos.tasa_60m <= 5, 'cohorte'].tolist()
+# El titular solo vale a 60 y 84 meses: a 36, 2009 entra en las cinco peores y 2004 sale.
+# Una versión anterior decía "en todas las lecturas"; 2009 se pinta aparte para que la
+# excepción se vea en la figura y no solo en el pie (corrección del 18/10/2026).
+for c in ['tasa_cruda_pct', 'tasa_60m', 'tasa_84m']:
+    assert sorted(r.loc[rangos[c] <= 5, 'cohorte']) == sorted(peores), c
+intrusa = r.loc[(rangos.tasa_36m <= 5) & ~r.cohorte.isin(peores), 'cohorte'].tolist()
+assert intrusa == [2009], intrusa
+rho = rangos.corr()['tasa_cruda_pct']   # Spearman = Pearson sobre los rangos
+assert round(rho.tasa_36m, 2) == 0.86 and round(rho.tasa_60m, 2) == 0.91 \
+    and round(rho.tasa_84m, 2) == 0.96, rho
 
 fig, ax = estilo.figura(
-    'Correcting for age changes the level, not the league table: the five worst vintages are the same',
+    'Correcting for age changes the level, not the league table: at 60 and 84 months the five '
+    'worst vintages are the same',
     'Rank of each vintage by cumulative charge-off rate, read four ways: the raw rate, and the '
     'rate at a common age of 36, 60 and 84 months. Rank 1 is the worst.',
     f'{len(r)} vintages with all four readings observable · FY1991–FY2018',
     fuente=FUENTE,
-    nota='Rank correlation between readings is 0.92 to 0.96. This contradicts the hypothesis '
-         'recorded before the analysis.',
+    nota=f'Rank correlation with the raw ranking is {rho.tasa_36m:.2f} at 36 months and '
+         f'{rho.tasa_60m:.2f} to {rho.tasa_84m:.2f} at 60 and 84. At 36 months 2009 enters the '
+         'five worst. This contradicts the hypothesis recorded before the analysis.',
     figsize=(9.6, 6.8),
 )
 
 xs = np.arange(4)
 for i, fila in r.iterrows():
     destacada = fila.cohorte in peores
+    excepcion = fila.cohorte in intrusa
+    color = estilo.ACENTO if destacada else estilo.TINTA_SUAVE if excepcion else '#dedbd2'
     ax.plot(xs, rangos.loc[i, columnas].to_numpy(),
-            color=estilo.ACENTO if destacada else '#dedbd2',
-            linewidth=2.0 if destacada else 1.1,
-            marker='o', markersize=6 if destacada else 3.5,
-            zorder=3 if destacada else 1)
-    if destacada:
+            color=color,
+            linewidth=2.0 if destacada else 1.6 if excepcion else 1.1,
+            marker='o', markersize=6 if destacada else 5 if excepcion else 3.5,
+            zorder=3 if destacada else 2 if excepcion else 1)
+    if destacada or excepcion:
         ax.text(-0.12, rangos.loc[i, 'tasa_cruda_pct'], f'{int(fila.cohorte)}',
-                ha='right', va='center', color=estilo.ACENTO, fontsize=9.5)
+                ha='right', va='center', color=color, fontsize=9.5)
         ax.text(3.12, rangos.loc[i, 'tasa_84m'], f'{int(fila.cohorte)}',
-                ha='left', va='center', color=estilo.ACENTO, fontsize=9.5)
+                ha='left', va='center', color=color, fontsize=9.5)
 
 ax.set_xticks(xs)
 ax.set_xticklabels(['Raw rate', 'At 36 months', 'At 60 months', 'At 84 months'])

@@ -36,10 +36,10 @@ Non-technical, decision-making, and short of time.
 >
 > **[Figure 4.]** One trap worth naming. 2020 and 2021 look like the best underwriting in a decade.
 > They aren't: the CARES Act had the government paying instalments on these loans. That is policy,
-> not credit quality, and a model calibrated on those two years will underprice everything.
+> not credit quality, and a calibration sample that includes those two years will underprice everything.
 >
 > **[Figure 3.]** And what the correction does *not* do: it doesn't reshuffle the league table. The
-> five worst vintages are the same read raw or read at equal age. The error isn't ranking the wrong
+> five worst vintages are almost the same read raw or read at equal age. The error isn't ranking the wrong
 > year worst — it's believing a young year's number.
 >
 > **The recommendation.** Underwrite the current book against a maturation curve, not against

@@ -34,8 +34,7 @@ imply?
 ## What the data says
 
 **A three-year-old vintage has shown less than a quarter of what it will cost.** Only 23.5% of
-eventual charge-offs have occurred by month 36, and the median default arrives at month 58. Half the
-loss is still ahead at five years.
+eventual charge-offs have occurred by month 36, and the median default arrives at month 58. More than two-fifths of the loss is still ahead at five years.
 
 ![Step curve showing the share of a vintage's eventual charge-offs that has already occurred, by months since approval, measured on the 24 completed vintages. It reaches 23.5% at 36 months, 56.6% at 60 months and 97.0% at 120 months, so three years after approval three quarters of the loss is still ahead.](salidas/graficos/02_a_los_tres_anos.png)
 
@@ -53,17 +52,15 @@ expose, committed in its own last figure. The honest output is the gap.
 
 **FY2020 and FY2021 are policy, not performance.** At the same age they default at roughly half the
 rate of every neighbour, because CARES Act section 1112 had the federal government paying
-instalments on many 7(a) loans. A model calibrated on those two years understates everything else by
-about 18%.
+instalments on many 7(a) loans. Added to a 2016–2019 calibration sample, those two years pull its rate at 36 months from 1.83% to 1.49% — about 18% too low.
 
 ![Five small panels with identical axes, one per vintage from FY2018 to FY2022, showing the cumulative charge-off rate over the first 45 months. FY2018, FY2019 and FY2022 reach 2.8%, 2.5% and 3.2%. FY2020 and FY2021, labelled "CARES Act relief", reach only 1.5% and 1.4% — roughly half, at exactly the same age.](salidas/graficos/04_artefacto_de_politica.png)
 
 **The correction changes the level, not the order.** This contradicts what was written down before
-the analysis. Rank correlation between the raw ranking and the equal-age ranking is 0.92–0.96, and
-the five worst vintages are the same either way. The error a fund makes is not ranking the wrong
+the analysis. Rank correlation between the raw ranking and the equal-age ranking is 0.86 at 36 months and 0.91–0.96 at 60 and 84. At 60 and 84 months the five worst vintages are the same as in the raw ranking: 2007, 2006, 2008, 2005 and 2004. At 36 months 2009 climbs to fourth and 2004 drops to seventh, because 2009 recorded its losses earlier than most. The error a fund makes is not ranking the wrong
 vintage worst — it is believing a young vintage's number.
 
-![Bump chart of the rank of 28 vintages by charge-off rate under four readings: the raw rate and the rate at 36, 60 and 84 months. Most lines stay flat. The five worst — 2007, 2006, 2008, 2005 and 2004 — hold the top five places under every reading, with only minor swaps between them.](salidas/graficos/03_nivel_no_orden.png)
+![Bump chart of the rank of 28 vintages by charge-off rate under four readings: the raw rate and the rate at 36, 60 and 84 months. Most lines stay flat. At 60 and 84 months the five worst are 2007, 2006, 2008, 2005 and 2004, the same as in the raw ranking; at 36 months 2009 moves up to fourth and 2004 drops to seventh.](salidas/graficos/03_nivel_no_orden.png)
 
 ## Recommendations
 
@@ -76,7 +73,7 @@ Full cards, each with evidence, expected impact, measurement, risk and effort, i
 2. **Keep FY2020 and FY2021 out of any calibration sample**; use FY2016–FY2019 as the modern
    reference window. Low effort.
 3. **Underwrite the short-term, small-ticket segment on its own terms.** At 60 months, loans of ≤7
-   years charge off at 5.67% against 0.39% for loans over 20 years. Medium effort — and term is a
+   years charge off at 5.67% (averaged across FY2010–FY2019) against 0.39% for loans over 20 years. Medium effort — and term is a
    proxy for product and collateral, so this says where the loss sits, not that tenor causes it.
 
 ## Data

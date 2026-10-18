@@ -44,7 +44,7 @@ will eventually suffer**, and the median charge-off does not arrive until month 
 **Expected impact.** For a book resembling FY2023, the loss assumption moves from 0.75 to 4.24 cents
 per dollar — the uncorrected figure understates by a factor of **5.7**. *Assumption:* the loss
 timing of FY1991–FY2014 continues to hold. FY2023's projection would place it worse than every
-vintage since FY2010: thirteen consecutive vintages, FY2011 to FY2022, landed below it.
+vintage since FY2010: twelve consecutive vintages, FY2011 to FY2022, landed below it.
 
 **How it is measured.** Each quarter, recompute the curve and record realised-against-projected for
 every vintage at its current age. A drift above 1 percentage point at equal age is the trigger to

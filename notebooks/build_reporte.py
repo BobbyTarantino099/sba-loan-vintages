@@ -208,9 +208,10 @@ doc.html_libre(
 
 doc.html_libre('<h3>3 · The correction changes the level, not the league table</h3>')
 doc.figura(G / '03_nivel_no_orden.png',
-           'Rank of 28 vintages under four readings. The five worst are the same in all of them.')
+           'Rank of 28 vintages under four readings. At 60 and 84 months the five worst are those '
+           'of the raw ranking; at 36, 2009 replaces 2004.')
 doc.html_libre(
-    '<p>Rank correlation 0.92–0.96. <strong>This contradicts the second hypothesis</strong>, and it '
+    '<p>Rank correlation with the raw ranking: 0.86 at 36 months, 0.91–0.96 at 60 and 84. <strong>This contradicts the second hypothesis</strong>, and it '
     'sharpens the case: the error a fund makes is not ranking the wrong vintage worst, it is '
     'believing a young vintage\'s number.</p>'
 )
@@ -221,8 +222,9 @@ doc.figura(G / '04_artefacto_de_politica.png',
            'is not credit.')
 doc.html_libre(
     '<p>At 36 months FY2020 sits at 0.85% and FY2021 at 0.77%, against 1.58–1.98% for their '
-    'neighbours. CARES Act section 1112 had the government paying instalments. A model calibrated '
-    'on those two years understates everything else by about 18%.</p>'
+    'neighbours. CARES Act section 1112 had the government paying instalments. Added to a 2016–2019 '
+    'calibration sample, those two years pull its rate at 36 months from 1.83% to 1.49%, about '
+    '18% too low.</p>'
 )
 doc.cerrar()
 

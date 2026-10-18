@@ -283,8 +283,7 @@ factors explode, and that is stated rather than hidden.
 
 ### Secondary finding: the correction changes the level, not the order
 
-Rank correlation between the raw ranking and the equal-age ranking is 0.92–0.96, and the five worst
-vintages are the same either way: FY2007, FY2006, FY2008, FY2005, FY2004. This **contradicts what I
+Rank correlation between the raw ranking and the equal-age ranking is 0.86 at 36 months and 0.91–0.96 at 60 and 84. At 60 and 84 months the five worst vintages are the same as in the raw ranking: FY2007, FY2006, FY2008, FY2005, FY2004. At 36 months FY2009 climbs to fourth and FY2004 drops to seventh, because FY2009 recorded its losses earlier than most (36% of its final loss by month 36, against the usual 23.5%). This **contradicts what I
 wrote down in phase 1**, and it sharpens the case rather than weakening it: censoring does not
 scramble the league table, it deflates the recent end of it. The error a fund makes is not ranking
 the wrong vintage worst — it is believing a young vintage's *number*.
@@ -311,11 +310,11 @@ Written 2026-08-31, before any analysis.
    FY2010 9.2%. **Cannot be tested for covid**: FY2020–21 are policy-suppressed (V3), so their
    flatness is not evidence of anything about credit.
 2. **"The raw ranking gives a different ordering than the equal-age ranking."** **Contradicted.**
-   The ordering barely moves (Spearman 0.92–0.96, same worst five). What the correction changes is
+   The ordering barely moves (Spearman 0.86–0.96 against the raw ranking; the same worst five at 60 and 84 months, with FY2009 for FY2004 at 36). What the correction changes is
    the level of the young vintages, not their rank.
 3. **"Most charge-offs land in the first three to four years."** **Contradicted.** In uncensored
    vintages the median charge-off arrives at **58 months** and only 23.5% of eventual losses have
-   occurred by 36 months; half the loss is still ahead at five years. This is why the horizon had
+   occurred by 36 months; more than two-fifths of the loss is still ahead at five years. This is why the horizon had
    to be set at 138 months rather than the 84 or 120 the plan expected.
 
 ### Limitations this analysis cannot argue away
@@ -420,8 +419,7 @@ months, 56.6% at 60 months and 97.0% at 120 months, so three years after approva
 the loss is still ahead.*
 
 **Figure 3.** *Bump chart of the rank of 28 vintages by charge-off rate under four readings: the raw
-rate and the rate at 36, 60 and 84 months. Most lines stay flat. The five worst — 2007, 2006, 2008,
-2005 and 2004 — hold the top five places under every reading, with only minor swaps between them.*
+rate and the rate at 36, 60 and 84 months. Most lines stay flat. At 60 and 84 months the five worst are 2007, 2006, 2008, 2005 and 2004, the same as in the raw ranking; at 36 months 2009 moves up to fourth and 2004 drops to seventh.*
 
 **Figure 4.** *Five small panels with identical axes, one per vintage from FY2018 to FY2022, showing
 the cumulative charge-off rate over the first 45 months. FY2018, FY2019 and FY2022 reach 2.8%, 2.5%
@@ -494,7 +492,7 @@ Priority is impact against effort.
 | **R3** | Underwrite the short-term, small-ticket segment on its own terms | Medium |
 
 R3 answers the half of the phase 1 decision that asked *which origination mix to avoid*: at 60
-months, loans of ≤7 years charge off at 5.67% against 0.39% for loans over 20 years — fourteen
+months, averaged across FY2010–FY2019, loans of ≤7 years charge off at 5.67% against 0.39% for loans over 20 years — fourteen
 times — and the smallest size quartile at 6.01% against 1.34% for the largest.
 
 **Its confound is written into the card, not hidden.** Term proxies product and collateral: 20-year
@@ -663,3 +661,6 @@ deliverable is a projection rather than a description.
 | 2026-09-02 | The gross-to-net gap is bounded, not converted | SBA's Table 10 puts mature recovery cohorts at 34-39%. But recovery is a share of the PURCHASED amount by PURCHASE year, and the case's rates are on the APPROVED amount by APPROVAL year — different numerators on different axes | Dividing one by the other to publish a net figure, which would have looked more useful and meant nothing |
 | 2026-09-02 | `explorer` added to the contract as OPTIONAL | Two cases were already published. A new mandatory field would have broken the whole site to enable a feature one case uses. A contract that has to keep growing can only grow by optional fields | Making it mandatory and backfilling two cases that have no explorer, which would have put an empty field in their front-matter forever |
 | 2026-09-02 | The mobile overflow is reported, not patched | The football case, published weeks ago, truncates its body text at 390 px exactly the same way. It is a site-wide layout problem, so patching this one page would hide it rather than fix it | A local fix on the new page, which would have made the newest case look fine and left the other two broken |
+| 2026-10-18 | "The five worst are the same under every reading" corrected to "at 60 and 84 months" | Rechecking every claim before the video found it false at 36 months: FY2009 climbs to fourth and FY2004 drops to seventh. V5 had printed it from the start, and the V5 row above said "stable at 60 and 84"; the narrative generalised it. The 0.92–0.96 was the correlation between the three ages, not against the raw ranking, which is 0.86 at 36 months. Figure 3 now draws FY2009 so the exception is visible, and `graficos.py` asserts both facts | Keeping the sentence because the hypothesis is still contradicted, which would have left a quantifier the data does not support |
+| 2026-10-18 | Three smaller statements made exact | "Half the loss is still ahead at five years": at 60 months 56.6% has occurred, so 43% is ahead. "A model calibrated on those two years understates by 18%": the 18% is what FY2020–21 do when added to a FY2016–19 sample (1.83% → 1.49%); calibrated on them alone it would be about 56%. The 5.67% / 0.39% by term now says it is the FY2010–FY2019 average | Leaving them as rounding, which is how a headline drifts one word at a time |
+| 2026-10-18 | "Thirteen consecutive vintages below 4.24 cents" corrected to twelve | FY2011 to FY2022 is twelve vintages; FY2010, at 4.47, is above | — |
