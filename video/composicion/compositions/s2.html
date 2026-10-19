@@ -1,0 +1,306 @@
+<template id="s2-template">
+  <div data-composition-id="s2" data-width="1920" data-height="1080">
+    <!--
+      Scene 2 · The trap. Local time; on the root it starts at 18.0 s, so every time here is the
+      transcript time minus 18.0. Data: assets/datos.js "trap" (video/datos_video.py: the
+      population, and the EXEMPT share by fiscal year over all approvals, from raw_7a).
+
+      Five beats: the population as a counter; one loan's life, most of it still ahead at the
+      cut-off; the status everyone drops, which the data dictionary defines as alive; its share
+      by vintage, 0.7% to 76.8%; and the fix, vintages slid from calendar time to the same age.
+    -->
+    <p id="s2-h1" class="head">
+      <span class="w" data-t="0.48">The </span><span class="w" data-t="0.80">data </span><span class="w" data-t="1.44">is </span><span class="w" data-t="1.92">every </span><span class="w hi" data-t="2.32">SBA </span><span class="w hi" data-t="3.04">loan </span><span class="w" data-t="3.44">since </span><span class="w" data-t="3.84">1991.</span>
+    </p>
+    <div id="s2-count">
+      <p id="s2-num">0</p>
+      <p id="s2-num-sub">disbursed SBA 7(a) small-business loans · approved FY1991–FY2026</p>
+    </div>
+
+    <p id="s2-h2" class="head">
+      <span class="w" data-t="7.52">But </span><span class="w" data-t="7.84">a </span><span class="w" data-t="8.00">loan </span><span class="w" data-t="8.32">approved </span><span class="w hi" data-t="8.80">two </span><span class="w hi" data-t="9.04">years </span><span class="w hi" data-t="9.28">ago </span><span class="w" data-t="9.68">hasn’t </span><span class="w" data-t="10.08">had </span><span class="w" data-t="10.32">time </span><span class="w" data-t="10.56">to </span><span class="w" data-t="10.80">fail.</span>
+    </p>
+    <div id="s2-life">
+      <!-- 1600 px = the case's 138-month horizon; two years observed = 24/138 of it. -->
+      <div id="s2-life-track"></div>
+      <div id="s2-life-seen"></div>
+      <div id="s2-life-ahead"></div>
+      <div id="s2-mark-0" class="mark"><i></i><span>Approved</span></div>
+      <div id="s2-mark-cut" class="mark cut"><i></i><span>Today · the data’s cut-off</span></div>
+      <p id="s2-seen-lab">2 years observed</p>
+      <p id="s2-ahead-lab">The rest of its life, when it can still fail: not in the data yet</p>
+    </div>
+
+    <p id="s2-h3" class="head">
+      <span class="w" data-t="11.76">The </span><span class="w" data-t="12.08">file </span><span class="w" data-t="12.64">even </span><span class="w" data-t="12.88">says </span><span class="w" data-t="13.28">so: </span><span class="w" data-t="13.76">a </span><span class="w" data-t="14.00">status </span><span class="w" data-t="14.56">most </span><span class="w" data-t="15.04">analysts </span><span class="w" data-t="15.60">drop </span><span class="w" data-t="16.00">as </span><span class="w" data-t="16.32">unknown </span><span class="w" data-t="16.96">means </span><span class="w lo" data-t="17.44">“still </span><span class="w lo" data-t="17.84">alive”.</span>
+    </p>
+    <div id="s2-status">
+      <div class="st"><code>P I F</code><span>paid in full</span></div>
+      <div class="st"><code>CHGOFF</code><span>charged off</span></div>
+      <div class="st" id="s2-exempt"><code>EXEMPT</code>
+        <span id="s2-unknown">outcome unknown?<em>dropped</em></span>
+        <span id="s2-alive">still alive</span>
+      </div>
+      <p id="s2-dict">SBA’s data dictionary: disbursed, and not cancelled, paid in full or charged off</p>
+    </div>
+
+    <div id="s2-chart">
+      <p id="s2-chart-title">Share of each vintage’s loans marked <code>EXEMPT</code>, still alive at the cut-off</p>
+      <svg id="s2-svg" width="1500" height="520" viewBox="0 0 1500 520">
+        <defs><clipPath id="s2-clip"><rect id="s2-clip-rect" x="0" y="-20" width="0" height="560" /></clipPath></defs>
+        <g id="s2-grid"></g>
+        <g clip-path="url(#s2-clip)">
+          <path id="s2-area" />
+          <path id="s2-line" />
+        </g>
+        <circle id="s2-dot-a" r="9" />
+        <circle id="s2-dot-b" r="11" />
+      </svg>
+      <p id="s2-lab-a" class="endlab"><b>0.7%</b>of 1991’s loans</p>
+      <p id="s2-lab-b" class="endlab"><b>77%</b>of 2024’s</p>
+    </div>
+
+    <p id="s2-h4" class="head">
+      <span class="w" data-t="26.16">So </span><span class="w" data-t="26.48">I </span><span class="w" data-t="26.72">read </span><span class="w" data-t="27.20">every </span><span class="w" data-t="27.44">vintage </span><span class="w hi" data-t="28.16">at </span><span class="w hi" data-t="28.24">the </span><span class="w hi" data-t="28.40">same </span><span class="w hi" data-t="28.72">age.</span>
+    </p>
+    <div id="s2-align">
+      <p id="s2-align-axis">calendar time</p>
+      <p id="s2-align-axis2">months since approval</p>
+    </div>
+
+    <style>
+      [data-composition-id="s2"] .w { display: inline-block; white-space: pre; }
+      [data-composition-id="s2"] .head {
+        position: absolute; left: 128px; top: 110px; width: 1660px;
+        font-size: 60px; font-weight: 700; line-height: 1.12; letter-spacing: -0.025em;
+        text-wrap: balance;
+      }
+      [data-composition-id="s2"] .head .hi { color: var(--acento); }
+      [data-composition-id="s2"] .head .lo { color: var(--contra); }
+      [data-composition-id="s2"] code { font-family: "Inter", sans-serif; font-weight: 700; letter-spacing: 0.04em; }
+
+      [data-composition-id="s2"] #s2-count { position: absolute; left: 128px; top: 400px; }
+      [data-composition-id="s2"] #s2-num {
+        font-size: 220px; font-weight: 700; letter-spacing: -0.04em; line-height: 1;
+        color: var(--acento); font-variant-numeric: tabular-nums;
+      }
+      [data-composition-id="s2"] #s2-num-sub { margin-top: 24px; font-size: 32px; color: var(--tinta-suave); }
+
+      [data-composition-id="s2"] #s2-life { position: absolute; left: 128px; top: 470px; width: 1660px; height: 300px; }
+      [data-composition-id="s2"] #s2-life-track { position: absolute; left: 0; top: 120px; width: 1600px; height: 14px; border-radius: 7px; background: var(--regla); }
+      [data-composition-id="s2"] #s2-life-seen {
+        position: absolute; left: 0; top: 112px; width: 278px; height: 30px; border-radius: 8px;
+        background: var(--acento); transform-origin: left center;
+      }
+      [data-composition-id="s2"] #s2-life-ahead {
+        position: absolute; left: 278px; top: 112px; width: 1322px; height: 30px; border-radius: 8px;
+        background: repeating-linear-gradient(135deg, #d9d6cd 0 14px, #eeece6 14px 28px);
+        transform-origin: left center;
+      }
+      [data-composition-id="s2"] .mark { position: absolute; top: 40px; }
+      [data-composition-id="s2"] .mark i { position: absolute; left: -2px; top: 50px; width: 4px; height: 92px; background: var(--tinta); }
+      [data-composition-id="s2"] .mark span { position: absolute; left: -2px; top: 0; white-space: nowrap; font-size: 28px; font-weight: 700; }
+      [data-composition-id="s2"] #s2-mark-0 { left: 0; }
+      [data-composition-id="s2"] #s2-mark-cut { left: 278px; }
+      [data-composition-id="s2"] #s2-seen-lab { position: absolute; left: 0; top: 170px; font-size: 28px; font-weight: 600; color: var(--acento); }
+      [data-composition-id="s2"] #s2-ahead-lab { position: absolute; left: 308px; top: 170px; font-size: 28px; font-weight: 600; color: var(--tinta-suave); }
+
+      [data-composition-id="s2"] #s2-status { position: absolute; left: 128px; top: 400px; width: 1100px; }
+      [data-composition-id="s2"] .st {
+        display: flex; align-items: center; gap: 36px; margin-top: 18px; padding: 24px 32px;
+        border-radius: 16px; background: #f6f5f1; font-size: 38px;
+      }
+      [data-composition-id="s2"] .st code { width: 220px; font-size: 34px; color: var(--tinta); }
+      [data-composition-id="s2"] .st span { color: var(--tinta-suave); }
+      [data-composition-id="s2"] #s2-exempt { position: relative; border: 3px solid var(--tinta); }
+      [data-composition-id="s2"] #s2-unknown em {
+        margin-left: 22px; padding: 4px 14px; border-radius: 8px; background: var(--tinta-suave); color: #fff;
+        font-style: normal; font-size: 26px; font-weight: 700; vertical-align: middle;
+      }
+      [data-composition-id="s2"] #s2-alive {
+        position: absolute; left: 288px; font-weight: 700; color: var(--contra);
+      }
+      [data-composition-id="s2"] #s2-dict { margin-top: 26px; font-size: 26px; color: var(--tinta-suave); }
+
+      [data-composition-id="s2"] #s2-chart { position: absolute; left: 128px; top: 300px; width: 1664px; height: 700px; }
+      [data-composition-id="s2"] #s2-chart-title { font-size: 26px; font-weight: 600; color: var(--tinta-suave); }
+      [data-composition-id="s2"] #s2-chart-title code { color: var(--tinta); }
+      [data-composition-id="s2"] #s2-svg { position: absolute; left: 70px; top: 70px; overflow: visible; }
+      [data-composition-id="s2"] #s2-line { fill: none; stroke: var(--contra); stroke-width: 6; stroke-linejoin: round; stroke-linecap: round; }
+      [data-composition-id="s2"] #s2-area { fill: var(--contra); opacity: 0.12; }
+      [data-composition-id="s2"] #s2-dot-a, [data-composition-id="s2"] #s2-dot-b { fill: var(--contra); }
+      [data-composition-id="s2"] .endlab { position: absolute; font-size: 26px; font-weight: 600; color: var(--tinta-suave); line-height: 1.1; }
+      [data-composition-id="s2"] .endlab b { display: block; font-size: 56px; font-weight: 700; color: var(--contra); }
+
+      [data-composition-id="s2"] #s2-align { position: absolute; left: 128px; top: 330px; width: 1660px; height: 620px; }
+      [data-composition-id="s2"] .vrow { position: absolute; left: 0; height: 64px; }
+      [data-composition-id="s2"] .vrow .bar { position: absolute; left: 0; top: 0; height: 64px; border-radius: 10px; background: var(--contexto); }
+      [data-composition-id="s2"] .vrow.hot .bar { background: var(--acento); }
+      [data-composition-id="s2"] .name { position: absolute; left: 0; font-size: 36px; font-weight: 700; color: var(--tinta-suave); }
+      [data-composition-id="s2"] #s2-align-axis, [data-composition-id="s2"] #s2-align-axis2 {
+        position: absolute; left: 200px; top: 470px; font-size: 26px; font-weight: 600; color: var(--tinta-suave);
+      }
+      [data-composition-id="s2"] .cutline { position: absolute; top: 40px; width: 4px; height: 400px; background: var(--tinta); }
+      [data-composition-id="s2"] .cutlab { position: absolute; top: 0; font-size: 26px; font-weight: 700; white-space: nowrap; }
+    </style>
+
+    <script>
+      (() => {
+        const raiz = document.querySelector('[data-composition-id="s2"]');
+        const $ = (sel) => raiz.querySelector(sel);
+        const words = (sel) => $(sel).querySelectorAll(".w");
+        const { trap } = window.DATOS;
+        const NS = "http://www.w3.org/2000/svg";
+        const el = (cls, parent, text) => {
+          const d = document.createElement("div");
+          d.className = cls;
+          if (text !== undefined) d.textContent = text;
+          parent.appendChild(d);
+          return d;
+        };
+
+        // ---- The EXEMPT line: 1991-2024 over 1300 px (room on the right for the end label) --
+        const AN = 1300, AL = 440, TOPE = 80;
+        const a0 = trap.alive[0].year, a1 = trap.alive[trap.alive.length - 1].year;
+        const x = (yr) => ((yr - a0) / (a1 - a0)) * AN;
+        const y = (v) => AL - (v / TOPE) * AL;
+        const grid = $("#s2-grid");
+        [0, 20, 40, 60, 80].forEach((v) => {
+          const l = document.createElementNS(NS, "line");
+          l.setAttribute("x1", 0); l.setAttribute("x2", AN);
+          l.setAttribute("y1", y(v)); l.setAttribute("y2", y(v));
+          l.setAttribute("stroke", v === 0 ? "#807d73" : "#e2e0d9"); l.setAttribute("stroke-width", 2);
+          grid.appendChild(l);
+          const t = document.createElementNS(NS, "text");
+          t.setAttribute("x", -16); t.setAttribute("y", y(v) + 8); t.setAttribute("text-anchor", "end");
+          t.setAttribute("font-size", 22); t.setAttribute("fill", "#5a564c"); t.textContent = v + "%";
+          grid.appendChild(t);
+        });
+        [1991, 2000, 2010, 2020, 2024].forEach((yr) => {
+          const t = document.createElementNS(NS, "text");
+          t.setAttribute("x", x(yr)); t.setAttribute("y", AL + 38); t.setAttribute("text-anchor", "middle");
+          t.setAttribute("font-size", 22); t.setAttribute("fill", "#5a564c"); t.textContent = String(yr);
+          grid.appendChild(t);
+        });
+        const pts = trap.alive.map((d) => [x(d.year), y(d.pct)]);
+        const dLinea = "M " + pts.map((p) => p.join(" ")).join(" L ");
+        $("#s2-line").setAttribute("d", dLinea);
+        $("#s2-area").setAttribute("d", `${dLinea} L ${AN} ${AL} L 0 ${AL} Z`);
+        const pa = pts[0], pb = pts[pts.length - 1];
+        $("#s2-dot-a").setAttribute("cx", pa[0]); $("#s2-dot-a").setAttribute("cy", pa[1]);
+        $("#s2-dot-b").setAttribute("cx", pb[0]); $("#s2-dot-b").setAttribute("cy", pb[1]);
+        // End labels in chart coordinates (the svg sits 70 px right and 70 px down in #s2-chart).
+        $("#s2-lab-a").style.left = 70 + pa[0] + 26 + "px";
+        $("#s2-lab-a").style.top = 70 + pa[1] - 120 + "px";
+        $("#s2-lab-b").style.left = 70 + pb[0] + 30 + "px";
+        $("#s2-lab-b").style.top = 70 + pb[1] - 36 + "px";
+
+        // ---- Calendar time → same age: three vintages, each observed up to the cut-off ------
+        // Names in a fixed column on the left; bars from x = 200. Calendar axis: 2005-2026
+        // over 1440 px. Age axis: 0-21 years over the same width.
+        const X0 = 200, ESC = 1440 / 21;
+        const filas = [
+          { year: 2007, top: 60 }, { year: 2015, top: 170 }, { year: 2023, top: 280, hot: true },
+        ].map((f) => {
+          const r = el("vrow" + (f.hot ? " hot" : ""), $("#s2-align"));
+          r.style.top = f.top + "px";
+          const vida = 2026.5 - f.year;          // years observed by the cut-off, 30 June 2026
+          const b = el("bar", r);
+          b.style.width = vida * ESC + "px";
+          const n = el("name", $("#s2-align"), String(f.year));
+          n.style.top = f.top + 10 + "px";
+          if (f.hot) n.style.color = "var(--acento)";
+          return { r, b, n, desde: (f.year - 2005) * ESC };
+        });
+        filas.forEach((f) => { f.r.style.left = X0 + f.desde + "px"; });
+        const corte = el("cutline", $("#s2-align"));
+        corte.style.left = X0 + (2026.5 - 2005) * ESC + "px";
+        const corteLab = el("cutlab", $("#s2-align"), "Cut-off");
+        corteLab.style.left = X0 + (2026.5 - 2005) * ESC - 40 + "px";
+        const edad = el("cutline", $("#s2-align"));
+        edad.style.left = X0 + 2.75 * ESC + "px";
+        edad.style.background = "var(--acento)";
+        const edadLab = el("cutlab", $("#s2-align"), "Same age: 33 months");
+        edadLab.style.left = X0 + 2.75 * ESC + 16 + "px";
+        edadLab.style.color = "var(--acento)";
+
+        // ---- Timeline (transcript time − 18.0) ---------------------------------------------
+        const tl = gsap.timeline({ paused: true });
+        const ocultos = ["#s2-h2", "#s2-life", "#s2-h3", "#s2-status", "#s2-chart", "#s2-h4", "#s2-align"];
+        tl.set(ocultos.map($), { opacity: 0 }, 0);
+        tl.set([$("#s2-alive"), $("#s2-dict"), $("#s2-lab-a"), $("#s2-lab-b"), $("#s2-dot-a"), $("#s2-dot-b"),
+                $("#s2-align-axis2"), edad, edadLab], { opacity: 0 }, 0);
+
+        // "The data is every SBA loan since 1991: 1.7 million." 0.48 → 7.3
+        words("#s2-h1").forEach((w) => {
+          tl.from(w, { opacity: 0, y: 22, duration: 0.35, ease: "power2.out" }, Number(w.dataset.t));
+        });
+        tl.from($("#s2-count"), { opacity: 0, y: 30, duration: 0.5, ease: "power3.out" }, 2.4);
+        const cuenta = { v: 0 };
+        tl.to(cuenta, {
+          v: trap.loans, duration: 2.4, ease: "power2.out",
+          onUpdate: () => { $("#s2-num").textContent = Math.round(cuenta.v).toLocaleString("en-US"); },
+        }, 4.4);
+
+        // "But a loan approved two years ago hasn't had time to fail." 7.52 → 11.3
+        tl.to([$("#s2-h1"), $("#s2-count")], { opacity: 0, y: -30, duration: 0.3, ease: "power2.in" }, 7.2);
+        tl.set($("#s2-h2"), { opacity: 1 }, 7.45);
+        words("#s2-h2").forEach((w) => {
+          tl.from(w, { opacity: 0, y: 22, duration: 0.35, ease: "power2.out" }, Number(w.dataset.t));
+        });
+        tl.to($("#s2-life"), { opacity: 1, duration: 0.3 }, 8.2);
+        tl.from($("#s2-mark-0"), { opacity: 0, y: 12, duration: 0.3 }, 8.3);
+        tl.from($("#s2-life-seen"), { scaleX: 0, duration: 0.8, ease: "power2.inOut" }, 8.8);
+        tl.from([$("#s2-mark-cut"), $("#s2-seen-lab")], { opacity: 0, y: 12, duration: 0.35 }, 9.5);
+        tl.from($("#s2-life-ahead"), { scaleX: 0, duration: 1.0, ease: "power2.inOut" }, 10.1);
+        tl.from($("#s2-ahead-lab"), { opacity: 0, duration: 0.4 }, 10.8);
+
+        // "The file even says so: a status most analysts drop as unknown means "still alive"." 11.76 → 18.4
+        tl.to([$("#s2-h2"), $("#s2-life")], { opacity: 0, y: -30, duration: 0.3, ease: "power2.in" }, 11.4);
+        tl.set($("#s2-h3"), { opacity: 1 }, 11.7);
+        words("#s2-h3").forEach((w) => {
+          tl.from(w, { opacity: 0, y: 20, duration: 0.3, ease: "power2.out" }, Number(w.dataset.t));
+        });
+        tl.to($("#s2-status"), { opacity: 1, duration: 0.01 }, 13.7);
+        tl.from(raiz.querySelectorAll("#s2-status .st"), { opacity: 0, x: -30, duration: 0.4, ease: "power3.out", stagger: 0.15 }, 13.7);
+        tl.from($("#s2-unknown em"), { opacity: 0, scale: 0.6, duration: 0.3, ease: "back.out(2)" }, 15.6);
+        tl.to($("#s2-unknown"), { opacity: 0, x: -20, duration: 0.3 }, 17.2);
+        tl.to($("#s2-alive"), { opacity: 1, duration: 0.01 }, 17.45);
+        tl.from($("#s2-alive"), { x: 30, duration: 0.4, ease: "power3.out" }, 17.45);
+        tl.to($("#s2-exempt"), { borderColor: "#0e8ea8", backgroundColor: "#e6f4f7", duration: 0.4 }, 17.45);
+        tl.to($("#s2-dict"), { opacity: 1, duration: 0.4 }, 17.9);
+
+        // "and it climbs from under 1% of the 1991 loans to 77% of 2024's." 18.64 → 25.0
+        tl.to($("#s2-status"), { opacity: 0, y: 30, duration: 0.3, ease: "power2.in" }, 18.4);
+        tl.to($("#s2-chart"), { opacity: 1, duration: 0.3 }, 18.7);
+        tl.to($("#s2-dot-a"), { opacity: 1, duration: 0.3 }, 20.0);
+        tl.to($("#s2-lab-a"), { opacity: 1, duration: 0.3 }, 20.2);
+        tl.to($("#s2-clip-rect"), { attr: { width: AN + 20 }, duration: 3.0, ease: "power1.inOut" }, 20.3);
+        tl.to($("#s2-dot-b"), { opacity: 1, duration: 0.2 }, 23.25);
+        tl.from($("#s2-dot-b"), { attr: { r: 0 }, duration: 0.35, ease: "back.out(2.5)" }, 23.25);
+        tl.to($("#s2-lab-b"), { opacity: 1, duration: 0.3 }, 23.3);
+
+        // "So I read every vintage at the same age." 26.16 → 29.2
+        tl.to([$("#s2-h3"), $("#s2-chart")], { opacity: 0, y: -30, duration: 0.3, ease: "power2.in" }, 25.6);
+        tl.set([$("#s2-h4"), $("#s2-align")], { opacity: 1 }, 26.0);
+        words("#s2-h4").forEach((w) => {
+          tl.from(w, { opacity: 0, y: 22, duration: 0.35, ease: "power2.out" }, Number(w.dataset.t));
+        });
+        tl.from(filas.map((f) => f.n), { opacity: 0, duration: 0.3, stagger: 0.12 }, 26.1);
+        tl.from(filas.map((f) => f.b), { scaleX: 0, transformOrigin: "left center", duration: 0.5, ease: "power2.out", stagger: 0.12 }, 26.1);
+        tl.from([corte, corteLab, $("#s2-align-axis")], { opacity: 0, duration: 0.3 }, 26.4);
+        // On "at the same age" every vintage slides back to its own approval: month 0.
+        tl.to([corte, corteLab, $("#s2-align-axis")], { opacity: 0, duration: 0.25 }, 27.7);
+        filas.forEach((f) => tl.to(f.r, { x: -f.desde, duration: 0.8, ease: "power3.inOut" }, 27.75));
+        tl.to($("#s2-align-axis2"), { opacity: 1, duration: 0.3 }, 28.3);
+        tl.to([edad, edadLab], { opacity: 1, duration: 0.3 }, 28.5);
+
+        // Hand-off to scene 3.
+        tl.to(raiz.children, { opacity: 0, duration: 0.3, ease: "power1.in" }, 29.55);
+
+        window.__timelines = window.__timelines || {};
+        window.__timelines["s2"] = tl;
+      })();
+    </script>
+  </div>
+</template>

@@ -1,0 +1,82 @@
+<template id="s5-template">
+  <div data-composition-id="s5" data-width="1920" data-height="1080">
+    <!--
+      Scene 5 · The invitation. Local time; on the root it starts at 95.0 s, so every time here is
+      the transcript time minus 95.0. The voice ends at ~101.9 s (local 6.9); the closing card
+      holds until 106.0 so it can be read over the music.
+
+      The transcript hears "can" in the second question; it is "can't" (confirmed by Juanes), and
+      the screen follows the script. The card carries the case's name, as in the other two videos.
+    -->
+    <div id="s5-questions">
+      <p id="s5-q1" class="q">
+        <span class="w" data-t="0.43">So </span><span class="w" data-t="0.83">what </span><span class="w hi" data-t="1.15">loss </span><span class="w hi" data-t="1.55">number </span><span class="w" data-t="1.95">goes </span><span class="w" data-t="2.19">into </span><span class="w" data-t="2.35">the </span><span class="w" data-t="2.59">model?</span>
+      </p>
+      <p id="s5-q2" class="q">
+        <span class="w" data-t="3.07">And </span><span class="w" data-t="3.31">what </span><span class="w no" data-t="3.55">can’t </span><span class="w" data-t="3.79">this </span><span class="w" data-t="4.03">data </span><span class="w" data-t="4.35">tell </span><span class="w" data-t="4.75">us?</span>
+      </p>
+    </div>
+
+    <div id="s5-card">
+      <p id="s5-kicker">Data analysis case study</p>
+      <p id="s5-name">US small-business loan vintages</p>
+      <p id="s5-meta"></p>
+      <div id="s5-url"><span>Read the case</span><b>juanesportfolio.com/cases/sba-loan-vintages</b></div>
+    </div>
+
+    <style>
+      [data-composition-id="s5"] .w { display: inline-block; white-space: pre; }
+      [data-composition-id="s5"] #s5-questions { position: absolute; left: 128px; top: 300px; width: 1660px; }
+      [data-composition-id="s5"] .q {
+        font-size: 76px; font-weight: 700; letter-spacing: -0.025em; line-height: 1.12;
+        text-wrap: balance;
+      }
+      [data-composition-id="s5"] #s5-q2 { margin-top: 48px; }
+      [data-composition-id="s5"] .hi { color: var(--acento); }
+      [data-composition-id="s5"] .no { color: var(--contra); }
+
+      [data-composition-id="s5"] #s5-card { position: absolute; left: 128px; top: 300px; width: 1660px; }
+      [data-composition-id="s5"] #s5-kicker {
+        font-size: 28px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--tinta-suave);
+      }
+      [data-composition-id="s5"] #s5-name {
+        margin-top: 18px; font-size: 104px; font-weight: 700; letter-spacing: -0.035em; line-height: 1.02;
+      }
+      [data-composition-id="s5"] #s5-meta { margin-top: 26px; font-size: 30px; color: var(--tinta-suave); }
+      [data-composition-id="s5"] #s5-url {
+        margin-top: 72px; display: inline-flex; align-items: center; gap: 24px;
+        padding: 22px 34px; border-radius: 16px; background: var(--acento); color: #fff;
+      }
+      [data-composition-id="s5"] #s5-url span { font-size: 28px; font-weight: 600; opacity: 0.9; }
+      [data-composition-id="s5"] #s5-url b { font-size: 36px; letter-spacing: -0.01em; }
+    </style>
+
+    <script>
+      (() => {
+        const raiz = document.querySelector('[data-composition-id="s5"]');
+        const $ = (sel) => raiz.querySelector(sel);
+        const { trap, hook } = window.DATOS;
+        $("#s5-meta").textContent =
+          `${trap.loans.toLocaleString("en-US")} loans · ${hook.vintages.length} vintages · 1991–2026 · SQL, DuckDB, Python`;
+
+        const tl = gsap.timeline({ paused: true });
+
+        // "So what loss number goes into the model? And what can't this data tell us?" 0.43 → 5.1
+        raiz.querySelectorAll(".w").forEach((w) => {
+          tl.from(w, { opacity: 0, y: 22, duration: 0.35, ease: "power2.out" }, Number(w.dataset.t));
+        });
+
+        // "You can read the case below." 5.23 → 6.9: the questions give way to the case itself.
+        tl.to($("#s5-questions"), { opacity: 0, y: -50, duration: 0.4, ease: "power2.in" }, 5.1);
+        tl.from($("#s5-kicker"), { opacity: 0, y: 16, duration: 0.4, ease: "power2.out" }, 5.45);
+        tl.from($("#s5-name"), { opacity: 0, y: 28, duration: 0.5, ease: "power3.out" }, 5.55);
+        tl.from($("#s5-meta"), { opacity: 0, duration: 0.4 }, 5.85);
+        tl.from($("#s5-url"), { opacity: 0, y: 20, scale: 0.96, duration: 0.45, ease: "back.out(1.8)" }, 6.05);
+        // Then the card holds to the end (11.0): nothing moves while it is being read.
+
+        window.__timelines = window.__timelines || {};
+        window.__timelines["s5"] = tl;
+      })();
+    </script>
+  </div>
+</template>

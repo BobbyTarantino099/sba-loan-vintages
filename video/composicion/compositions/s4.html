@@ -1,0 +1,256 @@
+<template id="s4-template">
+  <div data-composition-id="s4" data-width="1920" data-height="1080">
+    <!--
+      Scene 4 · What gets no number. Local time; on the root it starts at 71.2 s, so every time
+      here is the transcript time minus 71.2. The take says "the very mistake that the case
+      exists to expose"; the screen follows the script, without "that". Data: assets/datos.js
+      "nonumber" and "finding".
+
+      Two beats. Figure 1's last five columns: 2021-2023 with their projection, and 2024-2025
+      as empty dashed outlines, each with the share of its loss realised (5.9%, 0.2%) and the
+      factor a projection would multiply by (×17, ×606), struck through. Then figure 4: the
+      first 36 months of 2018-2022 on one axis, 2020 and 2021 at half their neighbours.
+    -->
+    <p id="s4-h1" class="head">
+      <span class="w" data-t="0.55">Two </span><span class="w" data-t="1.11">vintages </span><span class="w" data-t="1.83">get </span><span class="w hi" data-t="2.15">no </span><span class="w hi" data-t="2.31">number </span><span class="w" data-t="2.71">at </span><span class="w" data-t="3.03">all.</span>
+    </p>
+    <p id="s4-h2" class="head">
+      <span class="w hi" data-t="3.59">2024 </span><span class="w" data-t="4.63">and </span><span class="w hi" data-t="4.87">2025 </span><span class="w" data-t="5.83">have </span><span class="w" data-t="6.07">shown </span><span class="w" data-t="6.47">under </span><span class="w hi" data-t="6.79">6% </span><span class="w" data-t="7.43">of </span><span class="w" data-t="7.59">their </span><span class="w" data-t="7.83">losses, </span><span class="w" data-t="8.87">and </span><span class="w" data-t="9.35">multiplying </span><span class="w" data-t="10.23">that </span><span class="w" data-t="10.55">up </span><span class="w" data-t="11.03">is </span><span class="w" data-t="11.27">the </span><span class="w" data-t="11.51">very </span><span class="w" data-t="11.83">mistake </span><span class="w" data-t="12.39">the </span><span class="w" data-t="12.55">case </span><span class="w" data-t="12.95">exists </span><span class="w" data-t="13.51">to </span><span class="w" data-t="13.67">expose.</span>
+    </p>
+    <div id="s4-gap">
+      <p class="chart-title">Cumulative charge-off rate by vintage · recorded so far, and what the projection adds</p>
+      <div id="s4-plot"></div>
+    </div>
+
+    <p id="s4-h3" class="head">
+      <span class="w" data-t="15.51">And </span><span class="w lo" data-t="16.07">2020 </span><span class="w" data-t="16.95">and </span><span class="w lo" data-t="17.11">2021 </span><span class="w" data-t="18.23">look </span><span class="w" data-t="18.55">excellent </span><span class="w" data-t="19.11">at </span><span class="w" data-t="19.19">the </span><span class="w" data-t="19.35">same </span><span class="w" data-t="19.67">age, </span><span class="w" data-t="20.23">while </span><span class="w" data-t="20.55">the </span><span class="w" data-t="20.71">government </span><span class="w" data-t="21.19">was </span><span class="w" data-t="21.43">paying </span><span class="w" data-t="21.91">many </span><span class="w" data-t="22.07">of </span><span class="w" data-t="22.15">their </span><span class="w" data-t="22.39">instalments.</span>
+    </p>
+    <div id="s4-pol">
+      <p class="chart-title">Cumulative charge-off rate over the first 36 months · same age, same axis</p>
+      <svg id="s4-svg" width="1000" height="500" viewBox="0 0 1000 500">
+        <defs><clipPath id="s4-clip"><rect id="s4-clip-rect" x="-10" y="-20" width="0" height="540" /></clipPath></defs>
+        <g id="s4-grid"></g>
+        <g id="s4-lines" clip-path="url(#s4-clip)"></g>
+      </svg>
+      <div id="s4-cares">
+        <p class="cares-kicker">CARES Act §1112</p>
+        <p class="cares-text">The federal government paid principal and interest on many 7(a) loans during the pandemic.</p>
+      </div>
+    </div>
+
+    <style>
+      [data-composition-id="s4"] .w { display: inline-block; white-space: pre; }
+      [data-composition-id="s4"] .head {
+        position: absolute; left: 128px; top: 90px; width: 1660px;
+        font-size: 54px; font-weight: 700; line-height: 1.12; letter-spacing: -0.025em;
+        text-wrap: balance;
+      }
+      [data-composition-id="s4"] #s4-h1 { font-size: 64px; }
+      [data-composition-id="s4"] .head .hi { color: var(--acento); }
+      [data-composition-id="s4"] .head .lo { color: var(--contra); }
+      [data-composition-id="s4"] .chart-title { font-size: 24px; font-weight: 600; color: var(--tinta-suave); }
+
+      [data-composition-id="s4"] #s4-gap { position: absolute; left: 128px; top: 330px; width: 1664px; height: 700px; }
+      [data-composition-id="s4"] #s4-plot { position: absolute; left: 70px; top: 60px; width: 1560px; height: 460px; }
+      [data-composition-id="s4"] .grid { position: absolute; left: 0; width: 1560px; height: 2px; background: var(--regla); }
+      [data-composition-id="s4"] .grid.base { background: var(--tinta-tenue); }
+      [data-composition-id="s4"] .ylab { position: absolute; left: -70px; width: 56px; text-align: right; font-size: 22px; color: var(--tinta-suave); }
+      [data-composition-id="s4"] .rec, [data-composition-id="s4"] .come, [data-composition-id="s4"] .void {
+        position: absolute; width: 150px; transform-origin: bottom center;
+      }
+      [data-composition-id="s4"] .rec { bottom: 0; background: var(--contexto); }
+      [data-composition-id="s4"] .come { background: #d9d6cd; border-radius: 8px 8px 0 0; }
+      /* 2023 keeps scene 3's colours, so the eye carries it across the cut. */
+      [data-composition-id="s4"] .hot.rec { background: var(--acento); }
+      [data-composition-id="s4"] .hot.come { background: #e08fa0; }
+      [data-composition-id="s4"] .void {
+        border: 4px dashed var(--acento); border-bottom: none; border-radius: 8px 8px 0 0;
+        display: flex; align-items: flex-start; justify-content: center; padding-top: 22px;
+      }
+      [data-composition-id="s4"] .void .np { font-size: 24px; font-weight: 700; color: var(--acento); text-align: center; line-height: 1.15; }
+      [data-composition-id="s4"] .xlab { position: absolute; top: 474px; width: 150px; text-align: center; font-size: 28px; font-weight: 700; color: var(--tinta-suave); }
+      [data-composition-id="s4"] .xlab.hot { color: var(--acento); }
+      [data-composition-id="s4"] .real { position: absolute; top: 516px; width: 220px; margin-left: -35px; text-align: center; font-size: 22px; color: var(--tinta-suave); line-height: 1.2; }
+      [data-composition-id="s4"] .real b { display: block; font-size: 36px; color: var(--acento); }
+      [data-composition-id="s4"] .factor {
+        position: absolute; width: 150px; text-align: center;
+        font-size: 48px; font-weight: 700; color: var(--acento); font-variant-numeric: tabular-nums;
+      }
+      [data-composition-id="s4"] .factor i {
+        position: absolute; left: 10px; right: 10px; top: 50%; height: 6px; margin-top: -3px;
+        background: var(--tinta); transform-origin: left center;
+      }
+
+      [data-composition-id="s4"] #s4-pol { position: absolute; left: 128px; top: 330px; width: 1664px; height: 700px; }
+      [data-composition-id="s4"] #s4-svg { position: absolute; left: 80px; top: 60px; overflow: visible; }
+      [data-composition-id="s4"] #s4-cares {
+        position: absolute; left: 1290px; top: 300px; width: 370px; padding: 26px 30px;
+        border-radius: 16px; background: #e6f4f7; border-left: 6px solid var(--contra);
+      }
+      [data-composition-id="s4"] .cares-kicker { font-size: 26px; font-weight: 700; color: var(--contra); }
+      [data-composition-id="s4"] .cares-text { margin-top: 10px; font-size: 24px; line-height: 1.35; color: var(--tinta); }
+    </style>
+
+    <script>
+      (() => {
+        const raiz = document.querySelector('[data-composition-id="s4"]');
+        const $ = (sel) => raiz.querySelector(sel);
+        const words = (sel) => $(sel).querySelectorAll(".w");
+        const NS = "http://www.w3.org/2000/svg";
+        const { nonumber: N, finding: F } = window.DATOS;
+        const el = (cls, parent, text) => {
+          const d = document.createElement("div");
+          d.className = cls;
+          if (text !== undefined) d.textContent = text;
+          parent.appendChild(d);
+          return d;
+        };
+        const svgEl = (tag, attrs, parent) => {
+          const e = document.createElementNS(NS, tag);
+          Object.entries(attrs).forEach(([k, v]) => e.setAttribute(k, v));
+          parent.appendChild(e);
+          return e;
+        };
+
+        // ---- Beat 1 · 2021-2025: 0-16% over 460 px, five 312 px slots ----------------------
+        const AL = 460, TOPE = 16, PASO = 312;
+        const yc = (v) => (v / TOPE) * AL;
+        const plot = $("#s4-plot");
+        [0, 4, 8, 12, 16].forEach((v) => {
+          el("grid" + (v === 0 ? " base" : ""), plot).style.top = AL - yc(v) + "px";
+          el("ylab", plot, v + "%").style.top = AL - yc(v) - 14 + "px";
+        });
+        // The dashed outline of a vintage with no number stands as tall as 2023's projection:
+        // the height says "a number would go here", not what that number would be.
+        const alto = F.y2023.projected;
+        const filas = [2021, 2022, 2023, 2024, 2025].map((a, i) => {
+          const left = i * PASO + 80;
+          const sin = String(a) in N.gap;
+          const c = sin ? { recorded: N.gap[String(a)].raw, total: N.gap[String(a)].raw }
+                        : F.columns.find((k) => k.year === a);
+          const rec = el("rec" + (a === 2023 ? " hot" : ""), plot);
+          rec.style.left = left + "px";
+          rec.style.height = Math.max(yc(c.recorded), 3) + "px";
+          let extra;
+          if (sin) {
+            extra = el("void", plot);
+            extra.style.left = left + "px";
+            extra.style.bottom = yc(c.recorded) + "px";
+            extra.style.height = yc(alto) - yc(c.recorded) + "px";
+            el("np", extra).innerHTML = "not<br>projectable";
+          } else {
+            extra = el("come" + (a === 2023 ? " hot" : ""), plot);
+            extra.style.left = left + "px";
+            extra.style.bottom = yc(c.recorded) + "px";
+            extra.style.height = yc(c.total - c.recorded) + "px";
+          }
+          el("xlab" + (sin ? " hot" : ""), plot, String(a)).style.left = left + "px";
+          let real, factor;
+          if (sin) {
+            const g = N.gap[String(a)];
+            real = el("real", plot);
+            real.innerHTML = `<b>${g.realised}%</b>of its loss realised`;
+            real.style.left = left + "px";
+            factor = el("factor", plot, `×${g.factor}`);
+            factor.style.left = left + "px";
+            factor.style.bottom = yc(alto) * 0.4 + "px";
+            el("", factor).outerHTML = "<i></i>";
+          }
+          return { a, rec, extra, real, factor, sin };
+        });
+        const sinNum = filas.filter((f) => f.sin);
+
+        // ---- Beat 2 · 2018-2022, months 0-36: 1000 px wide, 0-2.5% over 440 px --------------
+        const AN = 1000, ALP = 440, TOPEP = 2.5, EDAD = 36;
+        const x = (m) => (m / EDAD) * AN;
+        const y = (v) => ALP - (v / TOPEP) * ALP;
+        const grid = $("#s4-grid");
+        [0, 0.5, 1, 1.5, 2, 2.5].forEach((v) => {
+          svgEl("line", { x1: 0, x2: AN, y1: y(v), y2: y(v), stroke: v === 0 ? "#807d73" : "#e2e0d9", "stroke-width": 2 }, grid);
+          svgEl("text", { x: -16, y: y(v) + 8, "text-anchor": "end", "font-size": 22, fill: "#5a564c" }, grid).textContent = v.toFixed(1) + "%";
+        });
+        [0, 12, 24, 36].forEach((m) => {
+          svgEl("text", { x: x(m), y: ALP + 38, "text-anchor": "middle", "font-size": 22, fill: "#5a564c" }, grid).textContent = String(m);
+        });
+        svgEl("text", { x: AN, y: ALP + 76, "text-anchor": "end", "font-size": 22, "font-weight": 600, fill: "#5a564c" }, grid).textContent = "months since approval";
+        const lineas = $("#s4-lines");
+        const etiquetas = [];
+        N.policy.forEach((p) => {
+          const cares = p.year === 2020 || p.year === 2021;
+          const color = cares ? "#0e8ea8" : "#8a877c";
+          svgEl("path", {
+            d: "M " + p.points.map(([e, v]) => `${x(e)} ${y(v)}`).join(" L "),
+            fill: "none", stroke: color, "stroke-width": cares ? 6 : 4, "stroke-linejoin": "round",
+          }, lineas);
+          const t = svgEl("text", {
+            x: AN + 16, y: y(p.at36) + 8, "font-size": 24, "font-weight": 700, fill: cares ? "#0b7287" : "#5a564c",
+          }, $("#s4-svg"));
+          t.textContent = `${p.year} · ${p.at36.toFixed(2)}%`;
+          etiquetas.push({ t, cares, yy: y(p.at36) + 8 });
+        });
+        // End labels 2018/2019 and 2020/2021 sit 14-25 px apart: push them to 30 px.
+        etiquetas.sort((a, b) => a.yy - b.yy);
+        for (let i = 1; i < etiquetas.length; i++) {
+          etiquetas[i].yy = Math.max(etiquetas[i].yy, etiquetas[i - 1].yy + 30);
+        }
+        etiquetas.forEach((e) => e.t.setAttribute("y", e.yy));
+
+        // ---- Timeline (transcript time − 71.2) ---------------------------------------------
+        const tl = gsap.timeline({ paused: true });
+        tl.set([$("#s4-h2"), $("#s4-h3"), $("#s4-pol"), $("#s4-gap")], { opacity: 0 }, 0);
+        tl.set([...sinNum.flatMap((f) => [f.real, f.factor]), $("#s4-cares")], { opacity: 0 }, 0);
+        tl.set(etiquetas.map((e) => e.t), { opacity: 0 }, 0);
+
+        // "Two vintages get no number at all." 0.55 → 3.4
+        words("#s4-h1").forEach((w) => {
+          tl.from(w, { opacity: 0, y: 22, duration: 0.35, ease: "power2.out" }, Number(w.dataset.t));
+        });
+        tl.to($("#s4-gap"), { opacity: 1, duration: 0.3 }, 1.0);
+        tl.from(filas.map((f) => f.rec), { scaleY: 0, duration: 0.45, ease: "power2.out", stagger: 0.08 }, 1.1);
+        tl.from(filas.filter((f) => !f.sin).map((f) => f.extra), { scaleY: 0, duration: 0.5, ease: "power2.out", stagger: 0.08 }, 1.5);
+        tl.from(sinNum.map((f) => f.extra), { opacity: 0, y: 20, duration: 0.5, ease: "power2.out", stagger: 0.15 }, 2.3);
+
+        // "2024 and 2025 have shown under 6% of their losses," 3.59 → 8.4
+        tl.to($("#s4-h1"), { opacity: 0, y: -24, duration: 0.25, ease: "power2.in" }, 3.3);
+        tl.set($("#s4-h2"), { opacity: 1 }, 3.5);
+        words("#s4-h2").forEach((w) => {
+          tl.from(w, { opacity: 0, y: 20, duration: 0.3, ease: "power2.out" }, Number(w.dataset.t));
+        });
+        sinNum.forEach((f, i) => {
+          tl.to(f.real, { opacity: 1, duration: 0.35 }, 6.8 + i * 0.3);
+          tl.from(f.real, { y: 14, duration: 0.4, ease: "power2.out" }, 6.8 + i * 0.3);
+        });
+
+        // "and multiplying that up" 8.87 → 10.9: the factor a projection would need.
+        sinNum.forEach((f, i) => {
+          tl.to(f.factor, { opacity: 1, duration: 0.01 }, 9.4 + i * 0.35);
+          tl.from(f.factor, { scale: 0.4, y: 40, duration: 0.5, ease: "back.out(1.8)" }, 9.4 + i * 0.35);
+        });
+        // "is the very mistake the case exists to expose." 11.03 → 14.4: struck through.
+        tl.from(sinNum.map((f) => f.factor.querySelector("i")), { scaleX: 0, duration: 0.4, ease: "power2.inOut", stagger: 0.2 }, 11.7);
+        tl.to(sinNum.map((f) => f.factor), { color: "#807d73", duration: 0.4 }, 12.0);
+
+        // "And 2020 and 2021 look excellent at the same age," 15.51 → 20.1
+        tl.to([$("#s4-h2"), $("#s4-gap")], { opacity: 0, y: -30, duration: 0.3, ease: "power2.in" }, 14.8);
+        tl.set($("#s4-h3"), { opacity: 1 }, 15.3);
+        words("#s4-h3").forEach((w) => {
+          tl.from(w, { opacity: 0, y: 20, duration: 0.3, ease: "power2.out" }, Number(w.dataset.t));
+        });
+        tl.to($("#s4-pol"), { opacity: 1, duration: 0.3 }, 15.5);
+        tl.to($("#s4-clip-rect"), { attr: { width: AN + 20 }, duration: 2.6, ease: "power1.inOut" }, 15.8);
+        tl.to(etiquetas.filter((e) => !e.cares).map((e) => e.t), { opacity: 1, duration: 0.3 }, 18.4);
+        tl.to(etiquetas.filter((e) => e.cares).map((e) => e.t), { opacity: 1, duration: 0.3 }, 18.6);
+
+        // "while the government was paying many of their instalments." 20.23 → 23.2
+        tl.to($("#s4-cares"), { opacity: 1, duration: 0.01 }, 20.6);
+        tl.from($("#s4-cares"), { x: 30, duration: 0.5, ease: "power3.out" }, 20.6);
+
+        // Hand-off to scene 5.
+        tl.to(raiz.children, { opacity: 0, duration: 0.3, ease: "power1.in" }, 23.45);
+
+        window.__timelines = window.__timelines || {};
+        window.__timelines["s4"] = tl;
+      })();
+    </script>
+  </div>
+</template>

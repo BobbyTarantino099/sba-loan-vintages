@@ -38,3 +38,16 @@ venv/
 
 # graft's local graph cache — regenerable, not committed (run `graft build`).
 graft/
+
+# Video (video/README.md): the voice is personal and the music's licence forbids redistributing
+# the file; renders are outputs. The published video is the public form of all of them.
+# Any recording, whatever its name: takes were once saved as "Part 1.wav" … "Part 5.wav".
+video/*.wav
+video/musica*.mp3
+video/composicion/voz_limpia.wav
+video/composicion/mezcla.wav
+video/composicion/transcript.json
+video/composicion/renders/
+# Generic agent instructions that `hyperframes init` writes into every project.
+video/composicion/CLAUDE.md
+video/composicion/AGENTS.md

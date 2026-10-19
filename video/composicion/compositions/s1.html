@@ -1,0 +1,201 @@
+<template id="s1-template">
+  <div data-composition-id="s1" data-width="1920" data-height="1080">
+    <!--
+      Scene 1 · The hook. Local time = root time (it starts at 0). Each word carries its start
+      time from transcript.json (data-t); the words on screen come from guion.md, because the
+      transcript mishears ("of charge off" for "charged off").
+
+      Three beats. The fund and the empty number its model needs. Then the only evidence it has:
+      the raw charge-off rate of every vintage, 1991 to 2025 (assets/datos.js "hook", from
+      proyeccion_terminal.csv). Then 2023 lights up at 3.5%, and a line at its level shows how
+      few vintages sit lower: three, all younger or policy-flattered (see guion.md).
+    -->
+
+    <!-- Beat 1 · the fund and its model -->
+    <p id="s1-h1" class="head">
+      <span class="w" data-t="0.80">A </span><span class="w" data-t="1.12">private </span><span class="w" data-t="1.60">credit </span><span class="w" data-t="2.00">fund </span><span class="w" data-t="2.40">has </span><span class="w" data-t="2.56">to </span><span class="w" data-t="2.72">put </span><span class="w" data-t="2.88">a </span><span class="w hi" data-t="2.96">loss </span><span class="w hi" data-t="3.36">number </span><span class="w" data-t="3.68">into </span><span class="w" data-t="3.84">its </span><span class="w" data-t="4.16">model </span><span class="w" data-t="4.64">today.</span>
+    </p>
+
+    <div id="s1-model">
+      <p class="model-kicker">Underwriting model · small-business loans</p>
+      <div class="model-row"><span>Book</span><b>US SBA 7(a) loans</b></div>
+      <div class="model-row"><span>Expected loss</span><b id="s1-slot"><i id="s1-q">?</i></b></div>
+    </div>
+
+    <!-- Beats 2 and 3 · the evidence -->
+    <p id="s1-h2" class="head">
+      <span class="w" data-t="5.44">Its </span><span class="w" data-t="5.84">only </span><span class="w" data-t="6.08">evidence </span><span class="w" data-t="6.56">is </span><span class="w" data-t="6.80">how </span><span class="w hi" data-t="7.04">recent </span><span class="w hi" data-t="7.44">loans </span><span class="w" data-t="7.84">have </span><span class="w" data-t="8.00">done.</span>
+    </p>
+    <p id="s1-h3" class="head">
+      <span class="w" data-t="8.96">The </span><span class="w hi" data-t="9.12">2023 </span><span class="w" data-t="9.84">vintage </span><span class="w" data-t="10.48">of </span><span class="w" data-t="10.64">US </span><span class="w" data-t="11.12">small-business </span><span class="w" data-t="11.76">loans </span><span class="w" data-t="12.24">shows </span><span class="w hi" data-t="12.80">3.5% </span><span class="w" data-t="13.84">charged </span><span class="w" data-t="14.20">off: </span><span class="w" data-t="15.36">one </span><span class="w" data-t="15.60">of </span><span class="w" data-t="15.76">the </span><span class="w" data-t="15.92">best </span><span class="w" data-t="16.24">in </span><span class="w" data-t="16.40">thirty-five </span><span class="w" data-t="17.04">years.</span>
+    </p>
+
+    <div id="s1-chart">
+      <p id="s1-chart-title">Share of each vintage’s loans charged off so far · by year of approval</p>
+      <div id="s1-plot"></div>
+    </div>
+
+    <style>
+      [data-composition-id="s1"] .w { display: inline-block; white-space: pre; }
+      [data-composition-id="s1"] .head {
+        position: absolute; left: 128px; top: 110px; width: 1660px;
+        font-size: 60px; font-weight: 700; line-height: 1.12; letter-spacing: -0.025em;
+        text-wrap: balance;
+      }
+      [data-composition-id="s1"] #s1-h1 { top: 200px; font-size: 68px; }
+      [data-composition-id="s1"] .head .hi { color: var(--acento); }
+
+      [data-composition-id="s1"] #s1-model {
+        position: absolute; left: 128px; top: 520px; width: 1040px; padding: 40px 48px;
+        border: 2px solid var(--regla); border-radius: 22px; background: var(--papel);
+      }
+      [data-composition-id="s1"] .model-kicker {
+        font-size: 24px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--tinta-suave);
+      }
+      [data-composition-id="s1"] .model-row {
+        display: flex; align-items: center; justify-content: space-between;
+        margin-top: 28px; padding-top: 24px; border-top: 2px solid var(--regla);
+        font-size: 40px;
+      }
+      [data-composition-id="s1"] .model-row span { color: var(--tinta-suave); }
+      [data-composition-id="s1"] .model-row b { font-weight: 700; }
+      [data-composition-id="s1"] #s1-slot {
+        display: inline-flex; align-items: center; justify-content: center;
+        width: 220px; height: 84px; border-radius: 14px;
+        border: 3px dashed var(--acento); background: var(--acento-suave);
+      }
+      [data-composition-id="s1"] #s1-q { font-style: normal; font-size: 52px; color: var(--acento); }
+
+      [data-composition-id="s1"] #s1-chart { position: absolute; left: 128px; top: 380px; width: 1664px; height: 620px; }
+      [data-composition-id="s1"] #s1-chart-title { font-size: 24px; font-weight: 600; color: var(--tinta-suave); }
+      [data-composition-id="s1"] #s1-plot { position: absolute; left: 70px; top: 60px; width: 1594px; height: 500px; }
+      [data-composition-id="s1"] .grid { position: absolute; left: 0; width: 1594px; height: 2px; background: var(--regla); }
+      [data-composition-id="s1"] .grid.base { background: var(--tinta-tenue); }
+      [data-composition-id="s1"] .ylab { position: absolute; left: -70px; width: 56px; text-align: right; font-size: 22px; color: var(--tinta-suave); }
+      [data-composition-id="s1"] .col {
+        position: absolute; bottom: 0; width: 30px; border-radius: 5px 5px 0 0;
+        background: var(--contexto); transform-origin: bottom center;
+      }
+      [data-composition-id="s1"] .col.hot { background: var(--acento); }
+      [data-composition-id="s1"] .xlab { position: absolute; top: 512px; width: 80px; margin-left: -25px; text-align: center; font-size: 22px; color: var(--tinta-suave); }
+      [data-composition-id="s1"] #s1-val {
+        position: absolute; width: 160px; margin-left: -65px; text-align: center;
+        font-size: 44px; font-weight: 700; color: var(--acento); font-variant-numeric: tabular-nums;
+      }
+      [data-composition-id="s1"] #s1-line {
+        position: absolute; left: 0; width: 1594px; height: 0; border-top: 3px dashed var(--acento);
+        transform-origin: left center;
+      }
+      [data-composition-id="s1"] #s1-note {
+        position: absolute; left: 0; padding: 4px 12px; border-radius: 8px; background: var(--papel);
+        font-size: 24px; font-weight: 600; color: var(--acento);
+      }
+    </style>
+
+    <script>
+      (() => {
+        const raiz = document.querySelector('[data-composition-id="s1"]');
+        const $ = (sel) => raiz.querySelector(sel);
+        const words = (sel) => $(sel).querySelectorAll(".w");
+        const { hook } = window.DATOS;
+        const el = (cls, parent, text) => {
+          const d = document.createElement("div");
+          d.className = cls;
+          if (text !== undefined) d.textContent = text;
+          parent.appendChild(d);
+          return d;
+        };
+
+        // Columns: 0-40% over 500 px, one 45.5 px slot per vintage.
+        const ALTO = 500, TOPE = 40, PASO = 1594 / hook.vintages.length;
+        const y = (v) => (v / TOPE) * ALTO;
+        const plot = $("#s1-plot");
+        [0, 10, 20, 30, 40].forEach((v) => {
+          const g = el("grid" + (v === 0 ? " base" : ""), plot);
+          g.style.top = ALTO - y(v) + "px";
+          const l = el("ylab", plot, v + "%");
+          l.style.top = ALTO - y(v) - 14 + "px";
+        });
+        const cols = hook.vintages.map((d, i) => {
+          const c = el("col", plot);
+          c.style.left = i * PASO + 8 + "px";
+          c.style.height = y(d.raw) + "px";
+          if ([1991, 2000, 2010, 2020, 2025].includes(d.year)) {
+            const l = el("xlab", plot, String(d.year));
+            l.style.left = i * PASO + 8 + "px";
+          }
+          return { d, c, i };
+        });
+        const hot = cols.find((r) => r.d.year === hook.highlight);
+        const hotLab = el("xlab", plot, String(hook.highlight));
+        hotLab.style.left = hot.i * PASO + 8 + "px";
+        hotLab.style.color = "var(--acento)";
+        hotLab.style.fontWeight = "700";
+        const val = el("", plot, "0.0%");
+        val.id = "s1-val";
+        val.style.left = hot.i * PASO + 8 + "px";
+        val.style.bottom = y(hot.d.raw) + 14 + "px";
+        const line = el("", plot);
+        line.id = "s1-line";
+        line.style.top = ALTO - y(hot.d.raw) + "px";
+        const lower = cols.filter((r) => r.d.raw < hot.d.raw).map((r) => r.d.year);
+        const note = el("", plot, `Only ${lower.length} vintages lower: ${lower.join(", ")}`);
+        note.id = "s1-note";
+        note.style.top = ALTO - y(hot.d.raw) - 44 + "px";
+        note.style.left = "24px";
+
+        const tl = gsap.timeline({ paused: true });
+        tl.set([$("#s1-h2"), $("#s1-h3"), $("#s1-chart")], { opacity: 0 }, 0);
+        tl.set([val, line, note, hotLab], { opacity: 0 }, 0);
+
+        // "A private credit fund has to put a loss number into its model today." 0.80 → 5.1
+        words("#s1-h1").forEach((w) => {
+          tl.from(w, { opacity: 0, y: 22, duration: 0.35, ease: "power2.out" }, Number(w.dataset.t));
+        });
+        tl.from($("#s1-model"), { opacity: 0, y: 30, duration: 0.6, ease: "power3.out" }, 2.0);
+        // On "loss number" the empty slot asks for it.
+        tl.from($("#s1-q"), { scale: 0, duration: 0.4, ease: "back.out(2.2)" }, 3.0);
+        tl.to($("#s1-slot"), { scale: 1.08, duration: 0.25, yoyo: true, repeat: 3, ease: "sine.inOut" }, 3.5);
+
+        // "Its only evidence is how recent loans have done." 5.44 → 8.5
+        tl.to([$("#s1-h1"), $("#s1-model")], { opacity: 0, y: -30, duration: 0.3, ease: "power2.in" }, 5.05);
+        tl.set($("#s1-h2"), { opacity: 1 }, 5.35);
+        words("#s1-h2").forEach((w) => {
+          tl.from(w, { opacity: 0, y: 22, duration: 0.35, ease: "power2.out" }, Number(w.dataset.t));
+        });
+        tl.to($("#s1-chart"), { opacity: 1, duration: 0.3 }, 5.9);
+        tl.from(cols.map((r) => r.c), { scaleY: 0, duration: 0.5, ease: "power2.out", stagger: 0.035 }, 6.0);
+
+        // "and the 2023 vintage … shows 3.5% charged off" 8.72 → 14.9
+        tl.to($("#s1-h2"), { opacity: 0, y: -24, duration: 0.25, ease: "power2.in" }, 8.6);
+        tl.set($("#s1-h3"), { opacity: 1 }, 8.85);
+        words("#s1-h3").forEach((w) => {
+          tl.from(w, { opacity: 0, y: 20, duration: 0.3, ease: "power2.out" }, Number(w.dataset.t));
+        });
+        tl.to(hot.c, { backgroundColor: "#a8203a", duration: 0.4 }, 9.2);
+        tl.to(hotLab, { opacity: 1, duration: 0.3 }, 9.2);
+        tl.to(cols.filter((r) => r !== hot).map((r) => r.c), { opacity: 0.55, duration: 0.4 }, 9.2);
+        tl.to(val, { opacity: 1, duration: 0.2 }, 12.7);
+        const contador = { v: 0 };
+        tl.to(contador, {
+          v: hot.d.raw, duration: 0.8, ease: "power2.out",
+          onUpdate: () => { val.textContent = contador.v.toFixed(1) + "%"; },
+        }, 12.8);
+
+        // "one of the best in thirty-five years." 15.36 → 17.5: a line at 2023's level; only
+        // three columns stay under it.
+        tl.to(line, { opacity: 1, duration: 0.01 }, 15.3);
+        tl.from(line, { scaleX: 0, duration: 0.9, ease: "power2.inOut" }, 15.3);
+        tl.to(cols.filter((r) => r.d.raw > hot.d.raw).map((r) => r.c), { opacity: 0.22, duration: 0.5 }, 15.9);
+        tl.to(cols.filter((r) => r.d.raw < hot.d.raw).map((r) => r.c), { opacity: 1, duration: 0.5 }, 15.9);
+        tl.to(note, { opacity: 1, duration: 0.4 }, 16.3);
+
+        // Hand-off to scene 2.
+        tl.to(raiz.children, { opacity: 0, duration: 0.3, ease: "power1.in" }, 17.7);
+
+        window.__timelines = window.__timelines || {};
+        window.__timelines["s1"] = tl;
+      })();
+    </script>
+  </div>
+</template>

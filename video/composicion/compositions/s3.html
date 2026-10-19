@@ -1,0 +1,277 @@
+<template id="s3-template">
+  <div data-composition-id="s3" data-width="1920" data-height="1080">
+    <!--
+      Scene 3 · The finding. Local time; on the root it starts at 47.9 s, so every time here is
+      the transcript time minus 47.9. "At" is not in the transcript (Parakeet drops it); its
+      onset was read from the voice's level, 48.44 s. Data: assets/datos.js "finding".
+
+      Two beats. The maturation curve of figure 2: share of eventual charge-offs already
+      recorded, by months since approval, over the 24 completed vintages; it stops at 36 months
+      (23.5%), then runs on, with the median charge-off at month 58. Then figure 1's columns,
+      2009-2023: what each vintage has recorded and, for the young ones, what the projection
+      adds; 2023 grows from 3.5% to 12.2%, and a line at its level leaves only 2009 above.
+    -->
+    <p id="s3-h1" class="head">
+      <span class="w" data-t="0.50">At </span><span class="w hi" data-t="0.66">three </span><span class="w hi" data-t="0.94">years, </span><span class="w" data-t="1.34">a </span><span class="w" data-t="1.66">vintage </span><span class="w" data-t="2.46">has </span><span class="w" data-t="2.62">shown </span><span class="w" data-t="2.94">less </span><span class="w" data-t="3.10">than </span><span class="w" data-t="3.26">a </span><span class="w" data-t="3.42">quarter </span><span class="w" data-t="3.82">of </span><span class="w" data-t="4.06">its </span><span class="w" data-t="4.22">losses: </span><span class="w hi" data-t="5.34">23.5%.</span>
+      <span class="w" data-t="7.38">The </span><span class="w" data-t="7.70">typical </span><span class="w" data-t="8.18">failure </span><span class="w" data-t="8.74">arrives </span><span class="w" data-t="9.22">in </span><span class="w hi" data-t="9.46">year </span><span class="w hi" data-t="9.86">five.</span>
+    </p>
+
+    <div id="s3-curve">
+      <p class="chart-title">Share of a vintage’s eventual charge-offs already recorded · 24 completed vintages</p>
+      <svg id="s3-svg" width="1500" height="560" viewBox="0 0 1500 560">
+        <defs><clipPath id="s3-clip"><rect id="s3-clip-rect" x="-10" y="-20" width="0" height="600" /></clipPath></defs>
+        <rect id="s3-band" />
+        <g id="s3-grid"></g>
+        <g clip-path="url(#s3-clip)">
+          <path id="s3-area" />
+          <path id="s3-step" />
+        </g>
+        <line id="s3-guide" />
+        <line id="s3-med" />
+        <circle id="s3-dot" r="12" />
+      </svg>
+      <p id="s3-at36" class="callout"><b>23.5%</b>recorded at 36 months</p>
+      <p id="s3-ahead" class="callout soft">three quarters still to come</p>
+      <p id="s3-medlab" class="callout"><b>Month 58</b>the median charge-off</p>
+    </div>
+
+    <p id="s3-h2" class="head">
+      <span class="w" data-t="10.82">Read </span><span class="w" data-t="11.54">at </span><span class="w" data-t="11.70">the </span><span class="w" data-t="11.86">same </span><span class="w" data-t="12.10">age, </span><span class="w hi" data-t="13.05">2023 </span><span class="w" data-t="13.93">isn’t </span><span class="w" data-t="14.33">at </span><span class="w" data-t="14.65">3.5%. </span><span class="w" data-t="16.41">It’s </span><span class="w" data-t="17.05">heading </span><span class="w" data-t="17.69">for </span><span class="w hi" data-t="18.01">12.2%: </span><span class="w" data-t="20.41">the </span><span class="w" data-t="20.65">worst </span><span class="w" data-t="21.29">since </span><span class="w" data-t="21.77">2009.</span>
+    </p>
+
+    <div id="s3-cols">
+      <p class="chart-title">Cumulative charge-off rate by vintage · recorded so far, and what the projection adds</p>
+      <div id="s3-plot"></div>
+      <div id="s3-legend">
+        <span><i class="sw rec"></i>Recorded so far</span>
+        <span><i class="sw come"></i>Still to come, projected at equal age</span>
+      </div>
+    </div>
+
+    <style>
+      [data-composition-id="s3"] .w { display: inline-block; white-space: pre; }
+      [data-composition-id="s3"] .head {
+        position: absolute; left: 128px; top: 90px; width: 1660px;
+        font-size: 56px; font-weight: 700; line-height: 1.12; letter-spacing: -0.025em;
+        text-wrap: balance;
+      }
+      [data-composition-id="s3"] .head .hi { color: var(--acento); }
+      [data-composition-id="s3"] .chart-title { font-size: 24px; font-weight: 600; color: var(--tinta-suave); }
+
+      [data-composition-id="s3"] #s3-curve { position: absolute; left: 128px; top: 330px; width: 1664px; height: 700px; }
+      [data-composition-id="s3"] #s3-svg { position: absolute; left: 90px; top: 60px; overflow: visible; }
+      [data-composition-id="s3"] #s3-step { fill: none; stroke: var(--acento); stroke-width: 6; stroke-linejoin: round; }
+      [data-composition-id="s3"] #s3-area { fill: var(--acento); opacity: 0.1; }
+      [data-composition-id="s3"] #s3-band { fill: var(--acento-suave); }
+      [data-composition-id="s3"] #s3-guide { stroke: var(--acento); stroke-width: 3; stroke-dasharray: 10 8; }
+      [data-composition-id="s3"] #s3-med { stroke: var(--tinta); stroke-width: 3; }
+      [data-composition-id="s3"] #s3-dot { fill: var(--acento); }
+      [data-composition-id="s3"] .callout { position: absolute; font-size: 26px; font-weight: 600; color: var(--tinta-suave); line-height: 1.15; }
+      [data-composition-id="s3"] .callout b { display: block; font-size: 54px; font-weight: 700; color: var(--acento); }
+      [data-composition-id="s3"] #s3-medlab b { color: var(--tinta); }
+      [data-composition-id="s3"] .callout.soft { font-size: 26px; color: var(--acento); }
+
+      [data-composition-id="s3"] #s3-cols { position: absolute; left: 128px; top: 330px; width: 1664px; height: 700px; }
+      [data-composition-id="s3"] #s3-plot { position: absolute; left: 70px; top: 60px; width: 1560px; height: 500px; }
+      [data-composition-id="s3"] .grid { position: absolute; left: 0; width: 1560px; height: 2px; background: var(--regla); }
+      [data-composition-id="s3"] .grid.base { background: var(--tinta-tenue); }
+      [data-composition-id="s3"] .ylab { position: absolute; left: -70px; width: 56px; text-align: right; font-size: 22px; color: var(--tinta-suave); }
+      [data-composition-id="s3"] .rec, [data-composition-id="s3"] .come {
+        position: absolute; width: 64px; transform-origin: bottom center;
+      }
+      [data-composition-id="s3"] .rec { background: var(--contexto); }
+      [data-composition-id="s3"] .come { background: #d9d6cd; border-radius: 6px 6px 0 0; }
+      [data-composition-id="s3"] .rec.top { border-radius: 6px 6px 0 0; }
+      [data-composition-id="s3"] .hot.rec { background: var(--acento); }
+      [data-composition-id="s3"] .hot.come { background: #e08fa0; }
+      [data-composition-id="s3"] .xlab { position: absolute; top: 512px; width: 64px; text-align: center; font-size: 22px; color: var(--tinta-suave); }
+      [data-composition-id="s3"] .xlab.hot { color: var(--acento); font-weight: 700; }
+      [data-composition-id="s3"] .vlab {
+        position: absolute; width: 140px; margin-left: -38px; text-align: center;
+        font-size: 30px; font-weight: 700; color: var(--tinta-suave); font-variant-numeric: tabular-nums;
+      }
+      [data-composition-id="s3"] .vlab.hot { font-size: 44px; color: var(--acento); }
+      [data-composition-id="s3"] #s3-whisk { position: absolute; width: 3px; background: var(--tinta); }
+      [data-composition-id="s3"] #s3-whisk::before, [data-composition-id="s3"] #s3-whisk::after {
+        content: ""; position: absolute; left: -10px; width: 23px; height: 3px; background: var(--tinta);
+      }
+      [data-composition-id="s3"] #s3-whisk::before { top: 0; }
+      [data-composition-id="s3"] #s3-whisk::after { bottom: 0; }
+      [data-composition-id="s3"] #s3-line {
+        position: absolute; left: 0; width: 1560px; height: 0; border-top: 3px dashed var(--acento);
+        transform-origin: left center;
+      }
+      [data-composition-id="s3"] #s3-legend { position: absolute; left: 70px; top: 610px; display: flex; gap: 40px; font-size: 22px; font-weight: 600; color: var(--tinta-suave); }
+      [data-composition-id="s3"] #s3-legend span { display: flex; align-items: center; gap: 10px; }
+      [data-composition-id="s3"] .sw { display: inline-block; width: 28px; height: 20px; border-radius: 4px; position: static; }
+      [data-composition-id="s3"] .sw.rec { background: var(--acento); }
+      [data-composition-id="s3"] .sw.come { background: #e08fa0; }
+    </style>
+
+    <script>
+      (() => {
+        const raiz = document.querySelector('[data-composition-id="s3"]');
+        const $ = (sel) => raiz.querySelector(sel);
+        const NS = "http://www.w3.org/2000/svg";
+        const { finding: F } = window.DATOS;
+        const el = (cls, parent, text) => {
+          const d = document.createElement("div");
+          d.className = cls;
+          if (text !== undefined) d.textContent = text;
+          parent.appendChild(d);
+          return d;
+        };
+        const svgEl = (tag, attrs, parent) => {
+          const e = document.createElementNS(NS, tag);
+          Object.entries(attrs).forEach(([k, v]) => e.setAttribute(k, v));
+          parent.appendChild(e);
+          return e;
+        };
+
+        // ---- Beat 1 · the maturation curve: 0-138 months over 1500 px, 0-100% over 480 px ---
+        const AN = 1500, AL = 480, EDAD = 138;
+        const x = (m) => (m / EDAD) * AN;
+        const y = (v) => AL - (v / 100) * AL;
+        const grid = $("#s3-grid");
+        [0, 25, 50, 75, 100].forEach((v) => {
+          svgEl("line", { x1: 0, x2: AN, y1: y(v), y2: y(v), stroke: v === 0 ? "#807d73" : "#e2e0d9", "stroke-width": 2 }, grid);
+          svgEl("text", { x: -16, y: y(v) + 8, "text-anchor": "end", "font-size": 22, fill: "#5a564c" }, grid).textContent = v + "%";
+        });
+        [0, 12, 24, 36, 48, 60, 84, 120, 138].forEach((m) => {
+          svgEl("text", { x: x(m), y: AL + 38, "text-anchor": "middle", "font-size": 22, fill: "#5a564c" }, grid).textContent = String(m);
+        });
+        svgEl("text", { x: AN, y: AL + 76, "text-anchor": "end", "font-size": 22, "font-weight": 600, fill: "#5a564c" }, grid).textContent = "months since approval";
+        // Year five, months 48-60, shaded behind the median.
+        const banda = $("#s3-band");
+        [["x", x(48)], ["y", 0], ["width", x(60) - x(48)], ["height", AL]].forEach(([k, v]) => banda.setAttribute(k, v));
+        const anio5 = svgEl("text", { x: (x(48) + x(60)) / 2, y: -12, "text-anchor": "middle", "font-size": 22, "font-weight": 700, fill: "#a8203a" }, $("#s3-svg"));
+        anio5.textContent = "Year five";
+        // A step curve, as in figure 2: each 3-month value holds until the next.
+        let d = `M ${x(F.curve[0].age)} ${y(F.curve[0].pct)}`;
+        for (let i = 1; i < F.curve.length; i++) d += ` H ${x(F.curve[i].age)} V ${y(F.curve[i].pct)}`;
+        $("#s3-step").setAttribute("d", d);
+        $("#s3-area").setAttribute("d", `${d} V ${AL} H ${x(F.curve[0].age)} Z`);
+        const p36 = [x(36), y(F.at36)];
+        $("#s3-dot").setAttribute("cx", p36[0]); $("#s3-dot").setAttribute("cy", p36[1]);
+        [["x1", p36[0]], ["x2", p36[0]], ["y1", p36[1]], ["y2", y(100)]].forEach(([k, v]) => $("#s3-guide").setAttribute(k, v));
+        [["x1", x(F.median_age)], ["x2", x(F.median_age)], ["y1", 0], ["y2", AL]].forEach(([k, v]) => $("#s3-med").setAttribute(k, v));
+        $("#s3-at36").style.left = 90 + p36[0] - 380 + "px";
+        $("#s3-at36").style.top = 60 + p36[1] - 130 + "px";
+        $("#s3-at36").style.textAlign = "right";
+        $("#s3-at36").style.width = "360px";
+        $("#s3-ahead").style.left = 90 + p36[0] + 20 + "px";
+        $("#s3-ahead").style.top = 60 + y(100) + 6 + "px";
+        $("#s3-medlab").style.left = 90 + x(F.median_age) + 20 + "px";
+        $("#s3-medlab").style.top = 60 + y(30) + "px";
+
+        // ---- Beat 2 · the columns, 2009-2023: 0-16% over 500 px ----------------------------
+        const ALC = 500, TOPEC = 16, PASO = 1560 / F.columns.length;
+        const yc = (v) => (v / TOPEC) * ALC;
+        const plot = $("#s3-plot");
+        [0, 4, 8, 12, 16].forEach((v) => {
+          el("grid" + (v === 0 ? " base" : ""), plot).style.top = ALC - yc(v) + "px";
+          const l = el("ylab", plot, v + "%");
+          l.style.top = ALC - yc(v) - 14 + "px";
+        });
+        const cols = F.columns.map((c, i) => {
+          const hot = c.year === 2023;
+          const left = i * PASO + 20;
+          const come = el("come" + (hot ? " hot" : ""), plot);
+          come.style.left = left + "px";
+          come.style.bottom = yc(c.recorded) + "px";
+          come.style.height = yc(c.total - c.recorded) + "px";
+          const rec = el("rec" + (hot ? " hot" : "") + (c.total - c.recorded < 0.05 ? " top" : ""), plot);
+          rec.style.left = left + "px";
+          rec.style.bottom = "0px";
+          rec.style.height = yc(c.recorded) + "px";
+          const xl = el("xlab" + (hot ? " hot" : ""), plot, String(c.year));
+          xl.style.left = left + "px";
+          return { c, rec, come, xl, left, hot };
+        });
+        const h23 = cols.find((r) => r.hot);
+        const v23 = el("vlab hot", plot, F.y2023.raw.toFixed(1) + "%");
+        v23.style.left = h23.left + "px";
+        v23.style.bottom = yc(F.y2023.raw) + 12 + "px";
+        const whisk = el("", plot);
+        whisk.id = "s3-whisk";
+        whisk.style.left = h23.left + 31 + "px";
+        whisk.style.bottom = yc(F.y2023.q1) + "px";
+        whisk.style.height = yc(F.y2023.q3) - yc(F.y2023.q1) + "px";
+        const linea = el("", plot);
+        linea.id = "s3-line";
+        linea.style.top = ALC - yc(F.y2023.projected) + "px";
+        const h09 = cols[0];
+        const v09 = el("vlab", plot, F.y2009.toFixed(1) + "%");
+        v09.style.left = h09.left + "px";
+        v09.style.bottom = yc(F.y2009) + 12 + "px";
+
+        // ---- Timeline (transcript time − 47.9) ---------------------------------------------
+        const tl = gsap.timeline({ paused: true });
+        tl.set([$("#s3-h2"), $("#s3-cols")], { opacity: 0 }, 0);
+        tl.set([$("#s3-curve"), $("#s3-dot"), $("#s3-guide"), $("#s3-at36"), $("#s3-ahead"), $("#s3-med"), $("#s3-medlab"), $("#s3-band")], { opacity: 0 }, 0);
+        tl.set([whisk, linea, v09, anio5], { opacity: 0 }, 0);
+
+        // "At three years, a vintage has shown less than a quarter of its losses: 23.5%." 0.5 → 6.2
+        raiz.querySelectorAll("#s3-h1 .w").forEach((w) => {
+          tl.from(w, { opacity: 0, y: 20, duration: 0.3, ease: "power2.out" }, Number(w.dataset.t));
+        });
+        tl.to($("#s3-curve"), { opacity: 1, duration: 0.3 }, 1.0);
+        // The curve draws up to month 36 and stops there.
+        tl.to($("#s3-clip-rect"), { attr: { width: x(36) + 18 }, duration: 1.8, ease: "power1.inOut" }, 1.3);
+        tl.to($("#s3-dot"), { opacity: 1, duration: 0.01 }, 3.1);
+        tl.from($("#s3-dot"), { attr: { r: 0 }, duration: 0.35, ease: "back.out(2.5)" }, 3.1);
+        tl.to($("#s3-guide"), { opacity: 1, duration: 0.4 }, 3.5);
+        tl.to($("#s3-ahead"), { opacity: 1, duration: 0.4 }, 4.0);
+        tl.to($("#s3-at36"), { opacity: 1, duration: 0.3 }, 5.2);
+        tl.from($("#s3-at36"), { y: 16, duration: 0.4, ease: "power2.out" }, 5.2);
+
+        // "The typical failure arrives in year five." 7.38 → 10.4: the curve runs on.
+        tl.to([$("#s3-guide"), $("#s3-ahead")], { opacity: 0, duration: 0.3 }, 7.2);
+        tl.to($("#s3-clip-rect"), { attr: { width: AN + 20 }, duration: 2.2, ease: "power1.inOut" }, 7.4);
+        tl.to([$("#s3-band"), anio5], { opacity: 1, duration: 0.4 }, 9.4);
+        tl.to($("#s3-med"), { opacity: 1, duration: 0.3 }, 9.5);
+        tl.to($("#s3-medlab"), { opacity: 1, duration: 0.3 }, 9.6);
+        tl.from($("#s3-medlab"), { x: -16, duration: 0.4, ease: "power2.out" }, 9.6);
+
+        // "Read at the same age, 2023 isn't at 3.5%." 10.82 → 15.6: the columns, recorded only.
+        tl.to([$("#s3-h1"), $("#s3-curve")], { opacity: 0, y: -30, duration: 0.3, ease: "power2.in" }, 10.4);
+        tl.set($("#s3-h2"), { opacity: 1 }, 10.7);
+        raiz.querySelectorAll("#s3-h2 .w").forEach((w) => {
+          tl.from(w, { opacity: 0, y: 20, duration: 0.3, ease: "power2.out" }, Number(w.dataset.t));
+        });
+        tl.to($("#s3-cols"), { opacity: 1, duration: 0.3 }, 11.0);
+        tl.set(cols.map((r) => r.come), { opacity: 0 }, 0);
+        tl.from(cols.map((r) => r.rec), { scaleY: 0, duration: 0.5, ease: "power2.out", stagger: 0.05 }, 11.1);
+        tl.from(v23, { opacity: 0, y: 12, duration: 0.4 }, 14.6);
+
+        // "It's heading for 12.2%:" 16.41 → 19.6: what the projection adds grows on top.
+        tl.to(v23, { opacity: 0, duration: 0.25 }, 16.6);
+        tl.to(cols.filter((r) => !r.hot).map((r) => r.come), { opacity: 1, duration: 0.01 }, 16.8);
+        tl.from(cols.filter((r) => !r.hot).map((r) => r.come), { scaleY: 0, duration: 0.5, ease: "power2.out" }, 16.8);
+        tl.to(h23.come, { opacity: 1, duration: 0.01 }, 17.1);
+        tl.from(h23.come, { scaleY: 0, duration: 1.0, ease: "power2.out" }, 17.1);
+        const cuenta = { v: F.y2023.raw };
+        tl.to(v23, { opacity: 1, duration: 0.2 }, 17.6);
+        tl.to(v23, { y: -(yc(F.y2023.q3) - yc(F.y2023.raw)), duration: 1.0, ease: "power2.out" }, 17.1);
+        tl.to(cuenta, {
+          v: F.y2023.projected, duration: 1.0, ease: "power2.out",
+          onUpdate: () => { v23.textContent = cuenta.v.toFixed(1) + "%"; },
+        }, 17.6);
+        tl.to(whisk, { opacity: 1, duration: 0.3 }, 18.6);
+
+        // "the worst since 2009." 20.41 → 22.5: a line at 12.2%; only 2009 stands above it.
+        tl.to(linea, { opacity: 1, duration: 0.01 }, 20.4);
+        tl.from(linea, { scaleX: 0, duration: 0.8, ease: "power2.inOut" }, 20.4);
+        tl.to(cols.filter((r) => !r.hot && r.c.year !== 2009).flatMap((r) => [r.rec, r.come]), { opacity: 0.35, duration: 0.4 }, 21.0);
+        tl.to(h09.rec, { backgroundColor: "#1a1815", duration: 0.4 }, 21.7);
+        tl.to(v09, { opacity: 1, duration: 0.3 }, 21.8);
+
+        // Hand-off to scene 4.
+        tl.to(raiz.children, { opacity: 0, duration: 0.3, ease: "power1.in" }, 22.95);
+
+        window.__timelines = window.__timelines || {};
+        window.__timelines["s3"] = tl;
+      })();
+    </script>
+  </div>
+</template>
