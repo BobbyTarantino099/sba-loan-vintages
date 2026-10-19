@@ -5,7 +5,7 @@ A narrated, animated walk through the case in five scenes: the fund's loss numbe
 the vintages that get no number, and an invitation to read the case. It is built from the case's own files. No number
 in it is typed by hand.
 
-**Watch it:** [on YouTube](<https://youtu.be/ID>) (unlisted: reachable from this link and the
+**Watch it:** [on YouTube](https://youtu.be/6zxZjH3cH6c) (unlisted: reachable from this link and the
 case page, not from search).
 **Script:** [`guion.md`](guion.md). Read its *Notes on the claims* before changing a sentence.
 
@@ -111,7 +111,7 @@ python video/portada.py          # render -> video/portada.jpg
 
    ```yaml
    video:
-     youtube: "<11-character id>"
+     youtube: "6zxZjH3cH6c"
      seconds: 106
      poster: "./images/video-poster.jpg"
    ```

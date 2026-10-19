@@ -15,6 +15,9 @@ This repository is the case's evidence layer: the full phase-by-phase log, the c
 records and the reproducible pipeline. The narrative — context, data, process, findings,
 recommendations — lives on the site linked above.
 
+**The case in 106 seconds →** [video on YouTube](https://youtu.be/6zxZjH3cH6c), and
+[how it is made](video/README.md).
+
 ---
 
 ## The question
